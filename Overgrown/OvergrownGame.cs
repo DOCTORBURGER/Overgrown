@@ -11,10 +11,10 @@ namespace Overgrown
 
         private TitleSprite titleSprite;
 
-        private ButtonSprite startButton;
-        private ButtonSprite loadButton;
-        private ButtonSprite optionsButton;
-        private ButtonSprite exitButton;
+        private Button startButton;
+        private Button loadButton;
+        private Button optionsButton;
+        private Button exitButton;
 
         public OvergrownGame()
         {
@@ -27,10 +27,11 @@ namespace Overgrown
         {
             // TODO: Add your initialization logic here
             titleSprite = new TitleSprite();
-            startButton = new ButtonSprite("START", new Vector2(75, 75));
-            loadButton = new ButtonSprite("LOAD", new Vector2(75 + 300 + 50, 75));
-            optionsButton = new ButtonSprite("OPTIONS", new Vector2(75, 225));
-            exitButton = new ButtonSprite("QUIT", new Vector2(75 + 300 + 50, 225));
+            startButton = new Button("START", new Vector2(75, 75));
+            loadButton = new Button("LOAD", new Vector2(75 + 300 + 50, 75));
+            optionsButton = new Button("OPTIONS", new Vector2(75, 225));
+            exitButton = new Button("QUIT", new Vector2(75 + 300 + 50, 225));
+            exitButton.Click += ExitButton_Click;
 
             base.Initialize();
         }
@@ -53,6 +54,7 @@ namespace Overgrown
                 Exit();
 
             // TODO: Add your update logic here
+            exitButton.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -71,6 +73,11 @@ namespace Overgrown
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void ExitButton_Click(object sender, System.EventArgs e)
+        {
+            Exit();
         }
     }
 }
