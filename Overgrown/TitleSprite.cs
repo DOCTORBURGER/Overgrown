@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using SharpDX.Direct3D9;
 
 namespace Overgrown
 {
@@ -17,7 +18,7 @@ namespace Overgrown
 
         private int animationFrame;
 
-        private Vector2 position = new Vector2(0, 0);
+        private Vector2 position = new Vector2(0, 175);
 
         private Texture2D texture;
 
