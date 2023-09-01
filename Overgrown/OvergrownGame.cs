@@ -10,6 +10,8 @@ namespace Overgrown
         private SpriteBatch _spriteBatch;
 
         private TitleSprite titleSprite;
+        private SunSprite sunSprite;
+        private CloudSprite cloudSprite;
 
         private Button startButton;
         private Button loadButton;
@@ -27,6 +29,8 @@ namespace Overgrown
         {
             // TODO: Add your initialization logic here
             titleSprite = new TitleSprite();
+            cloudSprite = new CloudSprite();
+            sunSprite= new SunSprite();
             startButton = new Button("START", new Vector2(75, 75));
             loadButton = new Button("LOAD", new Vector2(75 + 300 + 50, 75));
             optionsButton = new Button("OPTIONS", new Vector2(75, 225));
@@ -42,6 +46,8 @@ namespace Overgrown
 
             // TODO: use this.Content to load your game content here
             titleSprite.LoadContent(Content);
+            cloudSprite.LoadContent(Content);
+            sunSprite.LoadContent(Content);
             startButton.LoadContent(Content);
             loadButton.LoadContent(Content);
             optionsButton.LoadContent(Content);
@@ -54,6 +60,7 @@ namespace Overgrown
                 Exit();
 
             // TODO: Add your update logic here
+            cloudSprite.Update(gameTime, GraphicsDevice);
             exitButton.Update(gameTime);
 
             base.Update(gameTime);
@@ -66,6 +73,8 @@ namespace Overgrown
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             titleSprite.Draw(gameTime, _spriteBatch);
+            sunSprite.Draw(gameTime, _spriteBatch);
+            cloudSprite.Draw(gameTime, _spriteBatch);
             startButton.Draw(_spriteBatch);
             loadButton.Draw(_spriteBatch);
             optionsButton.Draw(_spriteBatch);
