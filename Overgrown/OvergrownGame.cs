@@ -18,6 +18,8 @@ namespace Overgrown
         private Button optionsButton;
         private Button exitButton;
 
+        private PlayerSprite playerSprite;
+
         public OvergrownGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -36,6 +38,7 @@ namespace Overgrown
             optionsButton = new Button("OPTIONS", new Vector2(75, 225));
             exitButton = new Button("QUIT", new Vector2(75 + 300 + 50, 225));
             exitButton.Click += ExitButton_Click;
+            playerSprite = new PlayerSprite();
 
             base.Initialize();
         }
@@ -52,6 +55,7 @@ namespace Overgrown
             loadButton.LoadContent(Content);
             optionsButton.LoadContent(Content);
             exitButton.LoadContent(Content);
+            playerSprite.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -62,6 +66,7 @@ namespace Overgrown
             // TODO: Add your update logic here
             cloudSprite.Update(gameTime, GraphicsDevice);
             exitButton.Update(gameTime);
+            playerSprite.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -79,6 +84,7 @@ namespace Overgrown
             loadButton.Draw(_spriteBatch);
             optionsButton.Draw(_spriteBatch);
             exitButton.Draw(_spriteBatch);
+            playerSprite.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
