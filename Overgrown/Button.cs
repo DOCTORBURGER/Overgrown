@@ -42,6 +42,8 @@ namespace Overgrown
             }
         }
 
+        private Color color = Color.White;
+
         public event EventHandler Click;
 
         #endregion
@@ -67,9 +69,12 @@ namespace Overgrown
 
             mouseIsHovering = false;
 
+            color = Color.White;
+
             if (mouseRectangle.Intersects(Rectangle))
             {
                 mouseIsHovering = true;
+                color = Color.Gray;
 
                 if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
                 {
@@ -82,7 +87,7 @@ namespace Overgrown
         {
             var textSize = font.MeasureString(text);
             textPosition = new Vector2(buttonPosition.X + ((300 - textSize.X) / 2), buttonPosition.Y + ((75 - textSize.Y) / 2));
-            spriteBatch.Draw(texture, buttonPosition, Color.White);
+            spriteBatch.Draw(texture, buttonPosition, color);
             spriteBatch.DrawString(font, text, textPosition, Color.White);
         }
     }

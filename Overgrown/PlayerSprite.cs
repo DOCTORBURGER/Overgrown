@@ -30,6 +30,8 @@ namespace Overgrown
 
         private PlayerState state = PlayerState.Idle;
 
+        private int gravity = 3;
+
         private int animationFrame = 0;
 
         private double animationTimer;
@@ -62,13 +64,14 @@ namespace Overgrown
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            
+
+            if (state == PlayerState.Idle)
+            {
+                animationFrame = 0;
+            }
+
             if (animationTimer > ANIMATION_SPEED)
             {
-                if (state == PlayerState.Idle)
-                {
-                    animationFrame = 0;
-                }
                 if (state == PlayerState.Walking)
                 {
                     animationFrame++;
@@ -79,7 +82,7 @@ namespace Overgrown
 
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Rectangle sourceRectangle = new Rectangle(animationFrame * 50, (int)state * 50, 50, 50);
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(64, 64), 1f, spriteEffects, 0);
+            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(64, 64), 1.25f, spriteEffects, 0);
         }
     }
 }
