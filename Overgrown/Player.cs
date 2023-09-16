@@ -59,7 +59,7 @@ namespace Overgrown
 
             state = PlayerState.Idle;
 
-            // velocity.Y += t * GRAVITY;
+            velocity.Y += t * GRAVITY;
 
             if (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A))
             {
@@ -77,8 +77,13 @@ namespace Overgrown
             {
                 velocity.X = 0;
             }
-
+            
             position += velocity * t;
+
+            if (position.X < 0 + 25) position.X = 0 + 25;
+            if (position.X > 800 - 25) position.X = 800 - 25;
+            if (position.Y < 0 + 25) position.Y = 0 + 25;
+            if (position.Y > 480 - 25) position.Y = 480 - 25;
 
             bounds.X = position.X - 25;
             bounds.Y = position.Y - 25;
