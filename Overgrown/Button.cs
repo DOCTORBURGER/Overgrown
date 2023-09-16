@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Overgrown.Collisions;
 
 namespace Overgrown
 {
@@ -34,13 +35,15 @@ namespace Overgrown
 
         #region Properties 
 
-        private Rectangle Rectangle
+        public BoundingRectangle Rectangle
         {
             get
             {
-                return new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, texture.Width, texture.Height);
+                return new BoundingRectangle((int)buttonPosition.X, (int)buttonPosition.Y, texture.Width, texture.Height);
             }
         }
+
+        private Color color = Color.White;
 
         public event EventHandler Click;
 
@@ -63,13 +66,16 @@ namespace Overgrown
             previousMouse = currentMouse;
             currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(currentMouse.X, currentMouse.Y, 1, 1);
+            var mouseRectangle = new BoundingRectangle(currentMouse.X, currentMouse.Y, 1, 1);
 
             mouseIsHovering = false;
 
-            if (mouseRectangle.Intersects(Rectangle))
+            color = Color.White;
+
+            if (CollisionHelper.Collides(Rectangle, mouseRectangle))
             {
                 mouseIsHovering = true;
+                color = Color.Gray;
 
                 if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
                 {
@@ -82,7 +88,7 @@ namespace Overgrown
         {
             var textSize = font.MeasureString(text);
             textPosition = new Vector2(buttonPosition.X + ((300 - textSize.X) / 2), buttonPosition.Y + ((75 - textSize.Y) / 2));
-            spriteBatch.Draw(texture, buttonPosition, Color.White);
+            spriteBatch.Draw(texture, buttonPosition, color);
             spriteBatch.DrawString(font, text, textPosition, Color.White);
         }
     }
