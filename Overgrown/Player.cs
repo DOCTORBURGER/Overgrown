@@ -25,19 +25,20 @@ namespace Overgrown
         private const float GRAVITY = 1000f;
 
         private KeyboardState keyboardState;
+        private KeyboardState priorKeyboardState;
 
         private Texture2D texture;
         private Texture2D textureHitbox;
 
         private bool flipped = false;
 
-        private Vector2 position = new Vector2(200, 200);
+        private Vector2 position = new Vector2(200, 180);
 
         private Vector2 velocity = new Vector2(0, 0);
 
         private PlayerState state = PlayerState.Idle;
 
-        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 25, 200 - 25), 32, 32);
+        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 17, 180 - 25), 34, 50);
 
         private float scale = 1.25f;
 
@@ -51,10 +52,12 @@ namespace Overgrown
             textureHitbox = content.Load<Texture2D>("buttonbad");
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, List<Button> buttons)
         {
+            bool onGround = false;
             float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            priorKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
 
             state = PlayerState.Idle;
@@ -77,15 +80,56 @@ namespace Overgrown
             {
                 velocity.X = 0;
             }
-            
+
+            foreach (Button button in buttons)
+            {
+                if (CollisionHelper.Collides(button.Rectangle, bounds))
+                {
+                    // Detect from which side the collision occurred
+                    float topOverlap = (bounds.Bottom - button.Rectangle.Top);
+                    float bottomOverlap = (button.Rectangle.Bottom - bounds.Top);
+                    float leftOverlap = (bounds.Right - button.Rectangle.Left);
+                    float rightOverlap = (button.Rectangle.Right - bounds.Left);
+
+                    // Find the minimum overlap which will be the side of collision
+                    float minOverlap = Math.Min(Math.Min(topOverlap, bottomOverlap), Math.Min(leftOverlap, rightOverlap));
+
+                    if (minOverlap == topOverlap)
+                    {
+                        position.Y -= topOverlap;
+                        velocity.Y = 0;
+                    }
+                    else if (minOverlap == bottomOverlap)
+                    {
+                        position.Y += bottomOverlap + 1;
+                        velocity.Y = 0;
+                    }
+                    else if (minOverlap == leftOverlap)
+                    {
+                        position.X -= leftOverlap;
+                        velocity.X = 0;
+                    }
+                    else if (minOverlap == rightOverlap)
+                    {
+                        position.X += rightOverlap;
+                        velocity.X = 0;
+                    }
+                }
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
+            {
+                velocity.Y -= 200;
+            }
+
             position += velocity * t;
 
-            if (position.X < 0 + 25) position.X = 0 + 25;
-            if (position.X > 800 - 25) position.X = 800 - 25;
-            if (position.Y < 0 + 25) position.Y = 0 + 25;
-            if (position.Y > 480 - 25) position.Y = 480 - 25;
+            if (position.X < 0 + 17) position.X = 0 + 17;
+            if (position.X > 800 - 17) position.X = 800 - 17;
+            if (position.Y < 0 + 25) position.Y = 0 + 30;
+            if (position.Y > 480 - 25) { position.Y = 480 - 25; velocity.Y = 0; }
 
-            bounds.X = position.X - 25;
+            bounds.X = position.X - 17;
             bounds.Y = position.Y - 25;
         }
 
@@ -110,7 +154,7 @@ namespace Overgrown
 
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Rectangle sourceRectangle = new Rectangle(animationFrame * 50, (int)state * 50, 50, 50);
-            Rectangle debugBoxRectangle = new Rectangle(0, 0, 50, 50);
+            //Rectangle debugBoxRectangle = new Rectangle(0, 0, 34, 50);
             spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(25, 25), 1, spriteEffects, 0);
             //spriteBatch.Draw(textureHitbox, new Vector2(bounds.X, bounds.Y), debugBoxRectangle, Color.White);
         }

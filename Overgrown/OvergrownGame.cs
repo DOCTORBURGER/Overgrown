@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Overgrown
 {
@@ -17,6 +18,8 @@ namespace Overgrown
         private Button loadButton;
         private Button optionsButton;
         private Button exitButton;
+
+        private List<Button> buttons;
 
         private Player playerSprite;
 
@@ -38,6 +41,13 @@ namespace Overgrown
             optionsButton = new Button("OPTIONS", new Vector2(75, 225));
             exitButton = new Button("QUIT", new Vector2(75 + 300 + 50, 225));
             exitButton.Click += ExitButton_Click;
+
+            buttons = new List<Button>();
+            buttons.Add(startButton);
+            buttons.Add(loadButton);
+            buttons.Add(optionsButton);
+            buttons.Add(exitButton);
+            
             playerSprite = new Player();
 
             base.Initialize();
@@ -65,8 +75,11 @@ namespace Overgrown
 
             // TODO: Add your update logic here
             cloudSprite.Update(gameTime, GraphicsDevice);
-            exitButton.Update(gameTime);
-            playerSprite.Update(gameTime);
+            foreach (var button in buttons)
+            {
+                button.Update(gameTime);
+            }
+            playerSprite.Update(gameTime, buttons);
 
             base.Update(gameTime);
         }

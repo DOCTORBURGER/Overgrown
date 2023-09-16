@@ -35,7 +35,7 @@ namespace Overgrown
 
         #region Properties 
 
-        private BoundingRectangle Rectangle
+        public BoundingRectangle Rectangle
         {
             get
             {
