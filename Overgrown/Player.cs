@@ -16,9 +16,11 @@ namespace Overgrown
         Walking
     }
 
-    public class PlayerSprite
+    public class Player
     {
         private const float ANIMATION_SPEED = 0.05f;
+
+        private const float GRAVITY = 1000f;
 
         private KeyboardState keyboardState;
 
@@ -28,9 +30,9 @@ namespace Overgrown
 
         private Vector2 position = new Vector2(200, 200);
 
-        private PlayerState state = PlayerState.Idle;
+        private Vector2 velocity = new Vector2(0, 0);
 
-        private int gravity = 3;
+        private PlayerState state = PlayerState.Idle;
 
         private int animationFrame = 0;
 
@@ -43,22 +45,32 @@ namespace Overgrown
 
         public void Update(GameTime gameTime)
         {
+            float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             keyboardState = Keyboard.GetState();
 
             state = PlayerState.Idle;
 
-            if (keyboardState.IsKeyDown(Keys.A))
+            velocity.Y += t * GRAVITY;
+
+            if (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A))
             {
-                flipped = true; 
-                position += new Vector2(-2, 0);
+                flipped = false;
+                velocity.X = 180;
                 state = PlayerState.Walking;
             }
-            if (keyboardState.IsKeyDown(Keys.D))
+            else if (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D))
             {
-                flipped = false; 
-                position += new Vector2(2, 0);
+                flipped = true;
+                velocity.X = -180;
                 state = PlayerState.Walking;
             }
+            else
+            {
+                velocity.X = 0;
+            }
+
+            position += velocity * t;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

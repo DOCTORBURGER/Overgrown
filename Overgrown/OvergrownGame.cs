@@ -18,7 +18,7 @@ namespace Overgrown
         private Button optionsButton;
         private Button exitButton;
 
-        private PlayerSprite playerSprite;
+        private Player playerSprite;
 
         public OvergrownGame()
         {
@@ -38,7 +38,7 @@ namespace Overgrown
             optionsButton = new Button("OPTIONS", new Vector2(75, 225));
             exitButton = new Button("QUIT", new Vector2(75 + 300 + 50, 225));
             exitButton.Click += ExitButton_Click;
-            playerSprite = new PlayerSprite();
+            playerSprite = new Player();
 
             base.Initialize();
         }
