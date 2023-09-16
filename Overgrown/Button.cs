@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using Overgrown.Collisions;
 
 namespace Overgrown
 {
@@ -34,11 +35,11 @@ namespace Overgrown
 
         #region Properties 
 
-        private Rectangle Rectangle
+        private BoundingRectangle Rectangle
         {
             get
             {
-                return new Rectangle((int)buttonPosition.X, (int)buttonPosition.Y, texture.Width, texture.Height);
+                return new BoundingRectangle((int)buttonPosition.X, (int)buttonPosition.Y, texture.Width, texture.Height);
             }
         }
 
@@ -65,13 +66,13 @@ namespace Overgrown
             previousMouse = currentMouse;
             currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(currentMouse.X, currentMouse.Y, 1, 1);
+            var mouseRectangle = new BoundingRectangle(currentMouse.X, currentMouse.Y, 1, 1);
 
             mouseIsHovering = false;
 
             color = Color.White;
 
-            if (mouseRectangle.Intersects(Rectangle))
+            if (CollisionHelper.Collides(Rectangle, mouseRectangle))
             {
                 mouseIsHovering = true;
                 color = Color.Gray;

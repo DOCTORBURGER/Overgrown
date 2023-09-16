@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Overgrown.Collisions;
+using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace Overgrown
         private KeyboardState keyboardState;
 
         private Texture2D texture;
+        private Texture2D textureHitbox;
 
         private bool flipped = false;
 
@@ -34,6 +37,10 @@ namespace Overgrown
 
         private PlayerState state = PlayerState.Idle;
 
+        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 25, 200 - 25), 32, 32);
+
+        private float scale = 1.25f;
+
         private int animationFrame = 0;
 
         private double animationTimer;
@@ -41,6 +48,7 @@ namespace Overgrown
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("player");
+            textureHitbox = content.Load<Texture2D>("buttonbad");
         }
 
         public void Update(GameTime gameTime)
@@ -51,7 +59,7 @@ namespace Overgrown
 
             state = PlayerState.Idle;
 
-            velocity.Y += t * GRAVITY;
+            // velocity.Y += t * GRAVITY;
 
             if (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A))
             {
@@ -71,6 +79,9 @@ namespace Overgrown
             }
 
             position += velocity * t;
+
+            bounds.X = position.X - 25;
+            bounds.Y = position.Y - 25;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -94,7 +105,9 @@ namespace Overgrown
 
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Rectangle sourceRectangle = new Rectangle(animationFrame * 50, (int)state * 50, 50, 50);
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(64, 64), 1.25f, spriteEffects, 0);
+            Rectangle debugBoxRectangle = new Rectangle(0, 0, 50, 50);
+            spriteBatch.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(25, 25), 1, spriteEffects, 0);
+            //spriteBatch.Draw(textureHitbox, new Vector2(bounds.X, bounds.Y), debugBoxRectangle, Color.White);
         }
     }
 }
