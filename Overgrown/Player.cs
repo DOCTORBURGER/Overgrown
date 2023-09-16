@@ -85,13 +85,11 @@ namespace Overgrown
             {
                 if (CollisionHelper.Collides(button.Rectangle, bounds))
                 {
-                    // Detect from which side the collision occurred
                     float topOverlap = (bounds.Bottom - button.Rectangle.Top);
                     float bottomOverlap = (button.Rectangle.Bottom - bounds.Top);
                     float leftOverlap = (bounds.Right - button.Rectangle.Left);
                     float rightOverlap = (button.Rectangle.Right - bounds.Left);
 
-                    // Find the minimum overlap which will be the side of collision
                     float minOverlap = Math.Min(Math.Min(topOverlap, bottomOverlap), Math.Min(leftOverlap, rightOverlap));
 
                     if (minOverlap == topOverlap)
