@@ -124,7 +124,7 @@ namespace Overgrown
 
             if (position.X < 0 + 17) position.X = 0 + 17;
             if (position.X > 800 - 17) position.X = 800 - 17;
-            if (position.Y < 0 + 25) position.Y = 0 + 30;
+            if (position.Y < 0 + 25) { position.Y = 0 + 30; velocity.Y = 0; }
             if (position.Y > 480 - 25) { position.Y = 480 - 25; velocity.Y = 0; }
 
             bounds.X = position.X - 17;
