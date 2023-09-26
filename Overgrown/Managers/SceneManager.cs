@@ -28,13 +28,16 @@ namespace Overgrown.Managers
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Font = content.Load<SpriteFont>("button_font");
+            Font = content.Load<SpriteFont>("button_font");     
         }
 
         public void SetScene(IScene newScene)
         {
+            if (currentScene != null) { currentScene.UnloadContent(); }
+
             currentScene = newScene;
             newScene.SceneManager = this;
+
             currentScene.LoadContent();
         }
 

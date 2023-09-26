@@ -33,8 +33,12 @@ namespace Overgrown.Scenes
             title = new Title();
 
             startButton = new Button("START", new Vector2(75, 75));
+            startButton.Click += StartButton_Click;
+
             loadButton = new Button("LOAD", new Vector2(75 + 300 + 50, 75));
+
             optionsButton = new Button("OPTIONS", new Vector2(75, 225));
+
             exitButton = new Button("QUIT", new Vector2(75 + 300 + 50, 225));
             exitButton.Click += ExitButton_Click;
 
@@ -64,6 +68,16 @@ namespace Overgrown.Scenes
 
             cloudSprite.LoadContent(content);
             sunSprite.LoadContent(content);
+        }
+
+        public override void UnloadContent()
+        {
+            if (content == null)
+                content = new ContentManager(SceneManager.Game.Services, "Content");
+
+            exitButton.Click -= ExitButton_Click;
+
+            content.Unload();
         }
 
         public override void Update(GameTime gameTime) 
@@ -103,6 +117,11 @@ namespace Overgrown.Scenes
         private void ExitButton_Click(object sender, System.EventArgs e)
         {
             SceneManager.Game.Exit();
+        }
+
+        private void StartButton_Click(object sender, System.EventArgs e)
+        {
+            SceneManager.SetScene(new GameScene());
         }
     }
 }
