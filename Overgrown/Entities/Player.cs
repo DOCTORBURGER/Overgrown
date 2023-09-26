@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
+using Overgrown.UI;
 using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Overgrown
+namespace Overgrown.Entities
 {
     public enum PlayerState
     {

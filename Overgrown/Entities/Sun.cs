@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Overgrown
+namespace Overgrown.Entities
 {
-    public class SunSprite
+    public class Sun
     {
         private Vector2 position = new Vector2(650, -25);
 

@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using SharpDX.Direct3D9;
 
-namespace Overgrown
+namespace Overgrown.UI
 {
-    public class TitleSprite
+    public class Title
     {
         private const float ANIMATION_SPEED = 0.3f;
 

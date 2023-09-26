@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
 
-namespace Overgrown
+namespace Overgrown.UI
 {
     public class Button
     {

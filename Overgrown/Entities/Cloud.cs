@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Overgrown
+namespace Overgrown.Entities
 {
-    public class CloudSprite
+    public class Cloud
     {
         private Vector2 position = new Vector2(0, 0);
 
