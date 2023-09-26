@@ -66,7 +66,6 @@ namespace Overgrown.Entities
             keyboardState = Keyboard.GetState();
 
             previousState = state;
-            state = PlayerState.Idle;
 
             velocity.Y += t * GRAVITY;
 
@@ -85,6 +84,8 @@ namespace Overgrown.Entities
             else
             {
                 velocity.X = 0;
+
+                state = PlayerState.Idle;
             }
 
             if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
@@ -107,12 +108,13 @@ namespace Overgrown.Entities
         {
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
+            if (state != previousState)
+            {
+                animationFrame = 0;
+            }
+
             if (animationTimer > ANIMATION_SPEED)
             {
-                if (state != previousState)
-                {
-                    animationFrame = 0;
-                }
                 if (state == PlayerState.Idle)
                 {
                     animationFrame++;
