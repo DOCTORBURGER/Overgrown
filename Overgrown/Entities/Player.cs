@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -52,10 +53,13 @@ namespace Overgrown.Entities
 
         private double animationTimer;
 
+        private SoundEffect jumpSound;
+
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("player");
             textureHitbox = content.Load<Texture2D>("buttonbad");
+            jumpSound = content.Load<SoundEffect>("jump");
         }
 
         public void Update(GameTime gameTime)
@@ -91,6 +95,7 @@ namespace Overgrown.Entities
             if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
             {
                 velocity.Y -= 600;
+                jumpSound.Play();
             }
 
             position += velocity * t;

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Overgrown.UI
 {
@@ -30,6 +31,9 @@ namespace Overgrown.UI
         private MouseState previousMouse;
 
         private bool mouseIsHovering;
+        private bool previousMouseIsHovering;
+
+        private SoundEffect selectBlipSound;
 
         #endregion
 
@@ -59,6 +63,8 @@ namespace Overgrown.UI
         {
             texture = content.Load<Texture2D>("buttonbad");
             font = content.Load<SpriteFont>("button_font");
+
+            selectBlipSound = content.Load<SoundEffect>("blipSelect");
         }
 
         public void Update(GameTime gameTime)
@@ -68,6 +74,7 @@ namespace Overgrown.UI
 
             var mouseRectangle = new BoundingRectangle(currentMouse.X, currentMouse.Y, 1, 1);
 
+            previousMouseIsHovering = mouseIsHovering;
             mouseIsHovering = false;
 
             color = Color.White;
@@ -76,6 +83,7 @@ namespace Overgrown.UI
             {
                 mouseIsHovering = true;
                 color = Color.Gray;
+                if (!previousMouseIsHovering) selectBlipSound.Play();
 
                 if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
                 {
