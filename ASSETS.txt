@@ -1,0 +1,37 @@
+===============================
+       OVERGROWN - ASSETS
+===============================
+
+This document lists all third-party assets used in [Game Title] and their respective licenses or terms of use.
+
+--------------
+    MUSIC
+--------------
+1. Erik Satie: Gymnopedie No 1
+	- Author: Kevin MacLeod
+	- License: (CC BY)
+	- Source: Free Music Archive
+2. Sequoias Start as Saplings
+	- Author: Geb
+	- License: (CC BY)
+	- Source: Free Music Archive
+
+--------------
+ SOUND EFFECTS
+--------------
+
+--------------
+     ART
+--------------
+1. title.png
+	- Author: Matt Fliehler (https://www.artstation.com/mattfliehler) (https://www.instagram.com/fliehlerartwork/)
+	- License: Collaborative
+	- Source: N/A
+2. player.png
+	- Author: Matt Fliehler (https://www.artstation.com/mattfliehler) (https://www.instagram.com/fliehlerartwork/)
+	- License: Collaborative
+	- Source: N/A
+3. cloud.png
+	- Author: Nunny
+	- License: Commercial use License
+	- Source: https://www.rawpixel.com/image/6187276/png-cloud-aesthetic-sticker

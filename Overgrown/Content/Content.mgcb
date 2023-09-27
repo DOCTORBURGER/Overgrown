@@ -44,6 +44,18 @@
 /processorParam:TextureFormat=Color
 /build:cloud.png
 
+#begin Geb - Sequoias Start as Saplings.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Geb - Sequoias Start as Saplings.mp3
+
+#begin Kevin MacLeod - Erik Satie_ Gymnopedie No 1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Kevin MacLeod - Erik Satie_ Gymnopedie No 1.mp3
+
 #begin player.png
 /importer:TextureImporter
 /processor:TextureProcessor

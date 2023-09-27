@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Overgrown.Entities;
 using Overgrown.Graphics;
 using Overgrown.Managers;
@@ -26,6 +27,8 @@ namespace Overgrown.Scenes
 
         private Sun sunSprite;
         private Cloud cloudSprite;
+
+        private Song backgroundMusic;
 
         private ContentManager content;
 
@@ -69,6 +72,10 @@ namespace Overgrown.Scenes
 
             cloudSprite.LoadContent(content);
             sunSprite.LoadContent(content);
+
+            backgroundMusic = content.Load<Song>("Geb - Sequoias Start as Saplings");
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
         }
 
         public override void UnloadContent()
