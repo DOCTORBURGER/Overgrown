@@ -45,9 +45,9 @@ namespace Overgrown
         {
             GraphicsDevice.Clear(Color.DeepSkyBlue);
 
+            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+
             base.Draw(gameTime);
         }
-
-
     }
 }

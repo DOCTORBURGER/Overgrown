@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Overgrown.Graphics;
 using Overgrown.Scenes;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Overgrown.Managers
 
         private readonly ContentManager content;
 
-        public SpriteBatch SpriteBatch { get; private set; }
+        public PointClampSpriteBatch SpriteBatch { get; private set; }
 
         public SpriteFont Font { get; private set; }
 
@@ -27,7 +28,7 @@ namespace Overgrown.Managers
 
         protected override void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new PointClampSpriteBatch(GraphicsDevice);
             Font = content.Load<SpriteFont>("button_font");     
         }
 

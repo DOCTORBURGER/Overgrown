@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Overgrown.Entities;
+using Overgrown.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +36,7 @@ namespace Overgrown.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch spriteBatch = SceneManager.SpriteBatch;
-            spriteBatch.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            PointClampSpriteBatch spriteBatch = SceneManager.SpriteBatch;
 
             spriteBatch.Begin();
 
