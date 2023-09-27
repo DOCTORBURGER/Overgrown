@@ -21,7 +21,7 @@ namespace Overgrown.Entities
 
     public class Player
     {
-        private const float ANIMATION_SPEED = 0.1f;
+        private const float ANIMATION_SPEED = 0.125f;
 
         private const float GRAVITY = 1500f;
 
@@ -47,8 +47,6 @@ namespace Overgrown.Entities
         private PlayerState previousState = PlayerState.Idle;
 
         private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_HEIGHT, HITBOX_WIDTH);
-
-        private float scale = 1.25f;
 
         private int animationFrame = 0;
 
