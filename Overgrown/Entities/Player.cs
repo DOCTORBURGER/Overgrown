@@ -29,7 +29,7 @@ namespace Overgrown.Entities
         private const int SPRITE_WIDTH = 64;
 
         private const int HITBOX_HEIGHT = 64;
-        private const int HITBOX_WIDTH = 64;
+        private const int HITBOX_WIDTH = 32;
 
         private KeyboardState keyboardState;
         private KeyboardState priorKeyboardState;
