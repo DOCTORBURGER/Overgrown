@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
-using Overgrown.UI;
-using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +92,7 @@ namespace Overgrown.Entities
 
             if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
             {
-                velocity.Y -= 600;
+                velocity.Y = -600;
                 jumpSound.Play();
             }
 
