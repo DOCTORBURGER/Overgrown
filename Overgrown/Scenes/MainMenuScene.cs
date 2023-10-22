@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Overgrown.Entities;
-using Overgrown.Graphics;
 using Overgrown.Managers;
 using Overgrown.UI;
 using System;
@@ -105,7 +104,7 @@ namespace Overgrown.Scenes
 
         public override void Draw(GameTime gameTime) 
         {
-            PointClampSpriteBatch spriteBatch = SceneManager.SpriteBatch;
+            SpriteBatch spriteBatch = SceneManager.SpriteBatch;
 
             spriteBatch.Begin();
 
