@@ -4,11 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Overgrown.Entities
 {
@@ -30,113 +25,113 @@ namespace Overgrown.Entities
         private const int HITBOX_HEIGHT = 64;
         private const int HITBOX_WIDTH = 32;
 
-        private KeyboardState keyboardState;
-        private KeyboardState priorKeyboardState;
+        private KeyboardState _keyboardState;
+        private KeyboardState _priorKeyboardState;
 
-        private Texture2D texture;
-        private Texture2D textureHitbox;
+        private Texture2D _texture;
+        private Texture2D _textureHitbox;
 
-        private bool flipped = false;
+        private bool _flipped = false;
 
-        private Vector2 position = new Vector2(200, 180);
+        private Vector2 _position = new Vector2(200, 180);
 
-        private Vector2 velocity = new Vector2(0, 0);
+        private Vector2 _velocity = new Vector2(0, 0);
 
-        private PlayerState state = PlayerState.Idle;
-        private PlayerState previousState = PlayerState.Idle;
+        private PlayerState _state = PlayerState.Idle;
+        private PlayerState _previousState = PlayerState.Idle;
 
-        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_HEIGHT, HITBOX_WIDTH);
+        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_HEIGHT, HITBOX_WIDTH);
 
-        private int animationFrame = 0;
+        private int _animationFrame = 0;
 
-        private double animationTimer;
+        private double _animationTimer;
 
-        private SoundEffect jumpSound;
+        private SoundEffect _jumpSound;
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("player");
-            textureHitbox = content.Load<Texture2D>("buttonbad");
-            jumpSound = content.Load<SoundEffect>("jump");
+            _texture = content.Load<Texture2D>("player");
+            _textureHitbox = content.Load<Texture2D>("buttonbad");
+            _jumpSound = content.Load<SoundEffect>("jump");
         }
 
         public void Update(GameTime gameTime)
         {
             float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            priorKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
+            _priorKeyboardState = _keyboardState;
+            _keyboardState = Keyboard.GetState();
 
-            previousState = state;
+            _previousState = _state;
 
-            velocity.Y += t * GRAVITY;
+            _velocity.Y += t * GRAVITY;
 
-            if (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A))
+            if (_keyboardState.IsKeyDown(Keys.D) && !_keyboardState.IsKeyDown(Keys.A))
             {
-                flipped = false;
-                velocity.X = 180;
-                state = PlayerState.Running;
+                _flipped = false;
+                _velocity.X = 180;
+                _state = PlayerState.Running;
             }
-            else if (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D))
+            else if (_keyboardState.IsKeyDown(Keys.A) && !_keyboardState.IsKeyDown(Keys.D))
             {
-                flipped = true;
-                velocity.X = -180;
-                state = PlayerState.Running;
+                _flipped = true;
+                _velocity.X = -180;
+                _state = PlayerState.Running;
             }
             else
             {
-                velocity.X = 0;
+                _velocity.X = 0;
 
-                state = PlayerState.Idle;
+                _state = PlayerState.Idle;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
+            if (_keyboardState.IsKeyDown(Keys.Space) && _priorKeyboardState.IsKeyUp(Keys.Space))
             {
-                velocity.Y = -600;
-                jumpSound.Play();
+                _velocity.Y = -600;
+                _jumpSound.Play();
             }
 
-            position += velocity * t;
+            _position += _velocity * t;
 
-            if (position.X < 0 + (HITBOX_WIDTH / 2)) position.X = 0 + (HITBOX_WIDTH / 2);
-            if (position.X > 800 - (HITBOX_WIDTH / 2)) position.X = 800 - (HITBOX_WIDTH / 2);
-            if (position.Y < 0 + (HITBOX_HEIGHT / 2)) { position.Y = 0 + (HITBOX_HEIGHT / 2); velocity.Y = 0; }
-            if (position.Y > 480 - (HITBOX_HEIGHT / 2)) { position.Y = 480 - (HITBOX_HEIGHT / 2); velocity.Y = 0; }
+            if (_position.X < 0 + (HITBOX_WIDTH / 2)) _position.X = 0 + (HITBOX_WIDTH / 2);
+            if (_position.X > 800 - (HITBOX_WIDTH / 2)) _position.X = 800 - (HITBOX_WIDTH / 2);
+            if (_position.Y < 0 + (HITBOX_HEIGHT / 2)) { _position.Y = 0 + (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
+            if (_position.Y > 480 - (HITBOX_HEIGHT / 2)) { _position.Y = 480 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
 
-            bounds.X = position.X - (HITBOX_WIDTH / 2);
-            bounds.Y = position.Y - (HITBOX_HEIGHT / 2);
+            _bounds.X = _position.X - (HITBOX_WIDTH / 2);
+            _bounds.Y = _position.Y - (HITBOX_HEIGHT / 2);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            _animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (state != previousState)
+            if (_state != _previousState)
             {
-                animationFrame = 0;
+                _animationFrame = 0;
             }
 
-            if (animationTimer > ANIMATION_SPEED)
+            if (_animationTimer > ANIMATION_SPEED)
             {
-                if (state == PlayerState.Idle)
+                if (_state == PlayerState.Idle)
                 {
-                    animationFrame++;
-                    if (animationFrame > 9) animationFrame = 0;
+                    _animationFrame++;
+                    if (_animationFrame > 9) _animationFrame = 0;
                 }
-                if (state == PlayerState.Running)
+                if (_state == PlayerState.Running)
                 {
-                    animationFrame++;
-                    if (animationFrame > 7) animationFrame = 0;
+                    _animationFrame++;
+                    if (_animationFrame > 7) _animationFrame = 0;
                 }
-                animationTimer -= ANIMATION_SPEED;
+                _animationTimer -= ANIMATION_SPEED;
             }
 
-            Vector2 drawPosition = new Vector2((int)position.X, (int)position.Y);
-            SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Rectangle sourceRectangle = new Rectangle(animationFrame * SPRITE_WIDTH, (int)state * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
+            Vector2 drawPosition = new Vector2((int)_position.X, (int)_position.Y);
+            SpriteEffects spriteEffects = (_flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Rectangle sourceRectangle = new Rectangle(_animationFrame * SPRITE_WIDTH, (int)_state * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
             //Rectangle debugBoxRectangle = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
-            spriteBatch.Draw(texture, drawPosition, sourceRectangle, Color.White, 0f, new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2), 1, spriteEffects, 0);
-            //spriteBatch.Draw(textureHitbox, new Vector2(bounds.X, bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
+            spriteBatch.Draw(_texture, drawPosition, sourceRectangle, Color.White, 0f, new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2), 1, spriteEffects, 0);
+            //spriteBatch.Draw(_textureHitbox, new Vector2(bounds.X, bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
         }
     }
 }

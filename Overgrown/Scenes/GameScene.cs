@@ -3,56 +3,67 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Overgrown.Entities;
 using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Overgrown.Managers;
+using Overgrown.State_Management;
+using Squared.Tiled;
+using System.IO;
 
 namespace Overgrown.Scenes
 {
-    public class GameScene : BaseScene
+    public class GameScene : IScene
     {
-        private ContentManager content;
+        private ContentManager _content;
 
-        private Player player;
+        private Player _player;
 
-        private Song backgroundMusic;
+        private Song _backgroundMusic;
+
+        private Map _map;
+
+        public SceneManager SceneManager { get; set; }
 
         public GameScene()
         {
-            player = new Player();
+            _player = new Player();
         }
 
-        public override void LoadContent()
+        public void LoadContent()
         {
-            if (content == null)
-                content = new ContentManager(SceneManager.Game.Services, "Content");
+            if (_content == null)
+                _content = new ContentManager(SceneManager.Game.Services, "Content");
 
-            player.LoadContent(content);
-            backgroundMusic = content.Load<Song>("Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
-            MediaPlayer.Play(backgroundMusic);
+            _player.LoadContent(_content);
+            _backgroundMusic = _content.Load<Song>("Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
+            MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
+
+            _map = Map.Load(Path.Combine(_content.RootDirectory, "TileMapTemp.tmx"), _content);
         }
 
-        public override void UnloadContent()
+        public void UnloadContent()
         {
-            if (content != null)
-                content.Unload();
+            if (_content != null)
+                _content.Unload();
         }
 
-        public override void Update(GameTime gameTime)
+        public void HandleInput(GameTime gameTime, InputState input)
         {
-            player.Update(gameTime);
+
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Update(GameTime gameTime)
+        {
+            _player.Update(gameTime);
+        }
+
+        public void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = SceneManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: SceneManager.ScaleMatrix, samplerState: SamplerState.PointClamp);
 
-            player.Draw(gameTime, spriteBatch);
+            _map.Draw(spriteBatch, new Rectangle(0, 0, SceneManager.VirtualResolution.X, SceneManager.VirtualResolution.Y), Vector2.Zero);
+            _player.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
         }

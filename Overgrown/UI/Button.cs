@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -16,24 +12,24 @@ namespace Overgrown.UI
     {
         #region Fields
 
-        private string text;
+        private string _text;
 
-        private Vector2 buttonPosition;
+        private Vector2 _buttonPosition;
 
-        private Vector2 textPosition;
+        private Vector2 _textPosition;
 
-        private Texture2D texture;
+        private Texture2D _texture;
 
-        private SpriteFont font;
+        private SpriteFont _font;
 
-        private MouseState currentMouse;
+        private MouseState _currentMouse;
 
-        private MouseState previousMouse;
+        private MouseState _previousMouse;
 
-        private bool mouseIsHovering;
-        private bool previousMouseIsHovering;
+        private bool _mouseIsHovering;
+        private bool _previousMouseIsHovering;
 
-        private SoundEffect selectBlipSound;
+        private SoundEffect _selectBlipSound;
 
         #endregion
 
@@ -43,7 +39,7 @@ namespace Overgrown.UI
         {
             get
             {
-                return new BoundingRectangle((int)buttonPosition.X, (int)buttonPosition.Y, texture.Width, texture.Height);
+                return new BoundingRectangle((int)_buttonPosition.X, (int)_buttonPosition.Y, _texture.Width, _texture.Height);
             }
         }
 
@@ -55,37 +51,37 @@ namespace Overgrown.UI
 
         public Button(string text, Vector2 buttonPosition)
         {
-            this.text = text;
-            this.buttonPosition = buttonPosition;
+            this._text = text;
+            this._buttonPosition = buttonPosition;
         }
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("buttonbad");
-            font = content.Load<SpriteFont>("button_font");
+            _texture = content.Load<Texture2D>("buttonbad");
+            _font = content.Load<SpriteFont>("button_font");
 
-            selectBlipSound = content.Load<SoundEffect>("blipSelect");
+            _selectBlipSound = content.Load<SoundEffect>("blipSelect");
         }
 
         public void Update(GameTime gameTime)
         {
-            previousMouse = currentMouse;
-            currentMouse = Mouse.GetState();
+            _previousMouse = _currentMouse;
+            _currentMouse = Mouse.GetState();
 
-            var mouseRectangle = new BoundingRectangle(currentMouse.X, currentMouse.Y, 1, 1);
+            var mouseRectangle = new BoundingRectangle(_currentMouse.X, _currentMouse.Y, 1, 1);
 
-            previousMouseIsHovering = mouseIsHovering;
-            mouseIsHovering = false;
+            _previousMouseIsHovering = _mouseIsHovering;
+            _mouseIsHovering = false;
 
             color = Color.White;
 
             if (CollisionHelper.Collides(Rectangle, mouseRectangle))
             {
-                mouseIsHovering = true;
+                _mouseIsHovering = true;
                 color = Color.Gray;
-                if (!previousMouseIsHovering) selectBlipSound.Play();
+                if (!_previousMouseIsHovering) _selectBlipSound.Play();
 
-                if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
+                if (_currentMouse.LeftButton == ButtonState.Released && _previousMouse.LeftButton == ButtonState.Pressed)
                 {
                     Click?.Invoke(this, new EventArgs());
                 }
@@ -94,10 +90,10 @@ namespace Overgrown.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var textSize = font.MeasureString(text);
-            textPosition = new Vector2(buttonPosition.X + ((300 - textSize.X) / 2), buttonPosition.Y + ((75 - textSize.Y) / 2));
-            spriteBatch.Draw(texture, buttonPosition, color);
-            spriteBatch.DrawString(font, text, textPosition, Color.White);
+            var textSize = _font.MeasureString(_text);
+            _textPosition = new Vector2(_buttonPosition.X + ((300 - textSize.X) / 2), _buttonPosition.Y + ((75 - textSize.Y) / 2));
+            spriteBatch.Draw(_texture, _buttonPosition, color);
+            spriteBatch.DrawString(_font, _text, _textPosition, Color.White);
         }
     }
 }

@@ -1,11 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Overgrown.Collisions
+﻿namespace Overgrown.Collisions
 {
     public class CollisionHelper
     {

@@ -20,7 +20,7 @@ namespace Overgrown
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            sceneManager = new SceneManager(this);
+            sceneManager = new SceneManager(this, _graphics);
             Components.Add(sceneManager);
         }
 
@@ -44,8 +44,6 @@ namespace Overgrown
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DeepSkyBlue);
-
-            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
             base.Draw(gameTime);
         }

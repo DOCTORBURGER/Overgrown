@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Overgrown.Managers;
+using Overgrown.State_Management;
 
 namespace Overgrown.Scenes
 {
@@ -11,6 +12,8 @@ namespace Overgrown.Scenes
         void LoadContent();
 
         void UnloadContent();
+
+        void HandleInput(GameTime gameTime, InputState input);
 
         void Update(GameTime gameTime);
 
