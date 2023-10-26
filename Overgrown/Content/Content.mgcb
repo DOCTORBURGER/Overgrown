@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\TiledPipeline\bin\Debug\net6.0\TiledPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -86,6 +87,11 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TileMapStart.png
+
+#begin TileMapTemp.tmx
+/importer:TiledImporter
+/processor:TilemapProcessor
+/build:TileMapTemp.tmx
 
 #begin title.png
 /importer:TextureImporter
