@@ -133,7 +133,7 @@ namespace Overgrown.Scenes
             var spriteBatch = SceneManager.SpriteBatch;
             var font = SceneManager.Font;
 
-            spriteBatch.Begin(transformMatrix: SceneManager.ScaleMatrix, samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin();
 
             for (int i = 0; i < _menuEntries.Count; i++)
             {

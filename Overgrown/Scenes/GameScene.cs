@@ -60,7 +60,7 @@ namespace Overgrown.Scenes
         {
             SpriteBatch spriteBatch = SceneManager.SpriteBatch;
 
-            spriteBatch.Begin(transformMatrix: SceneManager.ScaleMatrix, samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin();
 
             _map.Draw(gameTime, spriteBatch);
             _player.Draw(gameTime, spriteBatch);

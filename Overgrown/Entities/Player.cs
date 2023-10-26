@@ -94,7 +94,7 @@ namespace Overgrown.Entities
             _position += _velocity * t;
 
             if (_position.X < 0 + (HITBOX_WIDTH / 2)) _position.X = 0 + (HITBOX_WIDTH / 2);
-            if (_position.X > 800 - (HITBOX_WIDTH / 2)) _position.X = 800 - (HITBOX_WIDTH / 2);
+            if (_position.X > 854 - (HITBOX_WIDTH / 2)) _position.X = 854 - (HITBOX_WIDTH / 2);
             if (_position.Y < 0 + (HITBOX_HEIGHT / 2)) { _position.Y = 0 + (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
             if (_position.Y > 480 - (HITBOX_HEIGHT / 2)) { _position.Y = 480 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
 

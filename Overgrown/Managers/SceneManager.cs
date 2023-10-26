@@ -12,6 +12,7 @@ namespace Overgrown.Managers
 
         private readonly ContentManager _content;
         private GraphicsDeviceManager _graphics;
+        private RenderTarget2D _renderTarget;
         private Matrix _scaleMatrix = Matrix.Identity;
 
         private readonly InputState _input = new InputState();
@@ -20,7 +21,7 @@ namespace Overgrown.Managers
 
         public SpriteFont Font { get; private set; }
 
-        public readonly Point VirtualResolution = new Point(800, 480);
+        public readonly Point VirtualResolution = new Point(854, 480);
         public Matrix ScaleMatrix => _scaleMatrix;
 
         public SceneManager(Game game, GraphicsDeviceManager graphics) : base(game)
@@ -32,7 +33,18 @@ namespace Overgrown.Managers
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _renderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                VirtualResolution.X,
+                VirtualResolution.Y,
+                false,
+                GraphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24);
+
             Font = _content.Load<SpriteFont>("Silkscreen");
+
+            CalculateMatrix();
         }
 
         public void SetScene(IScene newScene)
@@ -55,7 +67,18 @@ namespace Overgrown.Managers
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(_renderTarget);
+            GraphicsDevice.Clear(Color.Transparent);
+
             _currentScene.Draw(gameTime);
+
+            GraphicsDevice.SetRenderTarget(null);
+
+            GraphicsDevice.Clear(Color.DeepSkyBlue);
+
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, ScaleMatrix);
+            SpriteBatch.Draw(_renderTarget, Vector2.Zero, Color.White);
+            SpriteBatch.End();
         }
 
         public void CalculateMatrix()

@@ -9,9 +9,10 @@ namespace Overgrown.Scenes
     {
         private List<Point> _supportedResolutions = new List<Point>
         {
-            new Point(800, 480),
-            new Point(1600, 960),
-            new Point(2400, 1440)
+            new Point(1280, 720),
+            new Point(1920, 1080),
+            new Point(2560, 1440),
+            new Point(3840, 2160)
         };
 
         private static int _currentResolutionIndex = 0;

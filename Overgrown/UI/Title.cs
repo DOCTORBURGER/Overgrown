@@ -18,7 +18,7 @@ namespace Overgrown.UI
 
         private int animationFrame;
 
-        private Vector2 position = new Vector2(0, 175);
+        private Vector2 position = new Vector2(0 + 22, 175);
 
         private Texture2D texture;
 
