@@ -20,6 +20,9 @@ namespace Overgrown
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+
             sceneManager = new SceneManager(this, _graphics);
             Components.Add(sceneManager);
         }
