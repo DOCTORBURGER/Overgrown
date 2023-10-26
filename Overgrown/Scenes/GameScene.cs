@@ -5,8 +5,8 @@ using Overgrown.Entities;
 using Microsoft.Xna.Framework.Media;
 using Overgrown.Managers;
 using Overgrown.State_Management;
-using Squared.Tiled;
 using System.IO;
+using Overgrown.Tilemaps;
 
 namespace Overgrown.Scenes
 {
@@ -18,7 +18,7 @@ namespace Overgrown.Scenes
 
         private Song _backgroundMusic;
 
-        private Map _map;
+        private Tilemap _map;
 
         public SceneManager SceneManager { get; set; }
 
@@ -37,7 +37,7 @@ namespace Overgrown.Scenes
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
-            _map = Map.Load(Path.Combine(_content.RootDirectory, "TileMapTemp.tmx"), _content);
+            _map = _content.Load<Tilemap>("TileMapTemp");
         }
 
         public void UnloadContent()
@@ -62,7 +62,7 @@ namespace Overgrown.Scenes
 
             spriteBatch.Begin(transformMatrix: SceneManager.ScaleMatrix, samplerState: SamplerState.PointClamp);
 
-            _map.Draw(spriteBatch, new Rectangle(0, 0, SceneManager.VirtualResolution.X, SceneManager.VirtualResolution.Y), Vector2.Zero);
+            _map.Draw(gameTime, spriteBatch);
             _player.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
