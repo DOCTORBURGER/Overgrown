@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Overgrown.Entities;
 using Microsoft.Xna.Framework.Media;
 using Overgrown.Managers;
 using Overgrown.State_Management;
 using Overgrown.Tilemaps;
+using Overgrown.Save_System;
 
 namespace Overgrown.Scenes
 {
@@ -21,11 +23,17 @@ namespace Overgrown.Scenes
 
         private Camera _camera;
 
+        private readonly InputAction _saveGame;
+
         public SceneManager SceneManager { get; set; }
 
         public GameScene()
         {
             _player = new Player();
+            Vector2? position = SaveSystem.Load();
+            if (position.HasValue) { _player.Position = position.Value; }
+
+            _saveGame = new InputAction(new[] { Keys.Enter }, true);
         }
 
         public void LoadContent()
@@ -51,7 +59,10 @@ namespace Overgrown.Scenes
 
         public void HandleInput(GameTime gameTime, InputState input)
         {
-
+            if (_saveGame.Occurred(input))
+            {
+                SaveSystem.Save(_player);
+            }
         }
 
         public void Update(GameTime gameTime)
