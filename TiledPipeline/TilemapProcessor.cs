@@ -25,6 +25,10 @@ namespace TiledPipeline
 
             output.Layers = ProcessLayers(input.TileLayers, tiles, input.TileWidth, input.TileHeight, context).ToArray();
 
+            output.Width = input.TileWidth * input.Width;
+
+            output.Height = input.TileHeight * input.Height;
+
             return output;
         }
 

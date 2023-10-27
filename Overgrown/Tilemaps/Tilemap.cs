@@ -15,6 +15,10 @@ namespace Overgrown.Tilemaps
     {
         public TilemapLayer[] Layers { get; init; }
 
+        public int Width;
+
+        public int Height;
+
         public virtual void Update(GameTime gameTime)
         {
             foreach (var layer in Layers)

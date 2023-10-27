@@ -48,6 +48,8 @@ namespace Overgrown.Entities
 
         private SoundEffect _jumpSound;
 
+        public Vector2 Position { get { return _position;  } }
+
         public void LoadContent(ContentManager content)
         {
             _texture = content.Load<Texture2D>("player");
@@ -94,9 +96,9 @@ namespace Overgrown.Entities
             _position += _velocity * t;
 
             if (_position.X < 0 + (HITBOX_WIDTH / 2)) _position.X = 0 + (HITBOX_WIDTH / 2);
-            if (_position.X > 854 - (HITBOX_WIDTH / 2)) _position.X = 854 - (HITBOX_WIDTH / 2);
+            if (_position.X > 1600 - (HITBOX_WIDTH / 2)) _position.X = 1600 - (HITBOX_WIDTH / 2);
             if (_position.Y < 0 + (HITBOX_HEIGHT / 2)) { _position.Y = 0 + (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
-            if (_position.Y > 480 - (HITBOX_HEIGHT / 2)) { _position.Y = 480 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
+            if (_position.Y > 640 - (HITBOX_HEIGHT / 2)) { _position.Y = 640 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
 
             _bounds.X = _position.X - (HITBOX_WIDTH / 2);
             _bounds.Y = _position.Y - (HITBOX_HEIGHT / 2);

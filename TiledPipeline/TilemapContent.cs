@@ -10,6 +10,10 @@ namespace TiledPipeline
     public class TilemapContent
     {
         public TilemapLayerContent[] Layers { get; set; }
+
+        public int Width;
+
+        public int Height;
     }
 
     [ContentSerializerRuntimeType("Overgrown.Tilemaps.TilemapLayer, Overgrown")]

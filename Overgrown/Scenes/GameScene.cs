@@ -20,6 +20,8 @@ namespace Overgrown.Scenes
 
         private Tilemap _map;
 
+        private Camera _camera;
+
         public SceneManager SceneManager { get; set; }
 
         public GameScene()
@@ -38,6 +40,8 @@ namespace Overgrown.Scenes
             MediaPlayer.IsRepeating = true;
 
             _map = _content.Load<Tilemap>("TileMapTemp");
+
+            _camera = new Camera(SceneManager.VirtualResolution, _map);
         }
 
         public void UnloadContent()
@@ -54,13 +58,14 @@ namespace Overgrown.Scenes
         public void Update(GameTime gameTime)
         {
             _player.Update(gameTime);
+            _camera.Follow(_player.Position);
         }
 
         public void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = SceneManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Vector3(-_camera.Position, 0)));
 
             _map.Draw(gameTime, spriteBatch);
             _player.Draw(gameTime, spriteBatch);
