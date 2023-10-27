@@ -48,7 +48,7 @@ namespace Overgrown.Entities
 
         private SoundEffect _jumpSound;
 
-        public Vector2 Position { get { return _position;  } }
+        public Vector2 Position { get { return _position; } set { _position = value; }  }
 
         public void LoadContent(ContentManager content)
         {
