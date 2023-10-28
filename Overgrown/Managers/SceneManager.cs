@@ -105,14 +105,14 @@ namespace Overgrown.Managers
 
         public bool SetFullScreen()
         {
-            _graphics.ToggleFullScreen();
-
-            if (_graphics.IsFullScreen)
+            if (!_graphics.IsFullScreen)
             {
                 // When going to fullscreen, set to the default monitor resolution
                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             }
+
+            _graphics.ToggleFullScreen();
 
             _graphics.ApplyChanges();
             CalculateMatrix();
