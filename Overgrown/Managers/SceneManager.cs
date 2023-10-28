@@ -98,11 +98,24 @@ namespace Overgrown.Managers
             CalculateMatrix();
         }
 
+        public int ReturnMaxWidth()
+        {
+            return GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        }
+
         public bool SetFullScreen()
         {
             _graphics.ToggleFullScreen();
 
+            if (_graphics.IsFullScreen)
+            {
+                // When going to fullscreen, set to the default monitor resolution
+                _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            }
+
             _graphics.ApplyChanges();
+            CalculateMatrix();
 
             return _graphics.IsFullScreen;
         }
