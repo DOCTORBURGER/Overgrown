@@ -35,6 +35,10 @@ namespace TiledPipeline
     [ContentSerializerRuntimeType("Overgrown.Tilemaps.TexturedTile, Overgrown")]
     public class TexturedTileContent : TilemapTileContent
     {
+        public int TileID { get; set; } = 2;
+
+        public bool Collidable { get; set; }
+
         public Rectangle SourceRect { get; set; }
 
         public Rectangle WorldRect { get; set; }

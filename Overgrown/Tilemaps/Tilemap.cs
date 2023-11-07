@@ -67,6 +67,10 @@ namespace Overgrown.Tilemaps
 
     public class TexturedTile : TilemapTile
     {
+        public int TileID { get; set; }
+
+        public bool Collidable { get; set; }
+
         public Rectangle SourceRect { get; init; }
 
         public Rectangle WorldRect { get; init; }
