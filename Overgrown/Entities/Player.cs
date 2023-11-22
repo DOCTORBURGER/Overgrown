@@ -40,7 +40,7 @@ namespace Overgrown.Entities
         private PlayerState _state = PlayerState.Idle;
         private PlayerState _previousState = PlayerState.Idle;
 
-        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_HEIGHT, HITBOX_WIDTH);
+        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_WIDTH, HITBOX_HEIGHT);
 
         private int _animationFrame = 0;
 
@@ -49,6 +49,8 @@ namespace Overgrown.Entities
         private SoundEffect _jumpSound;
 
         public Vector2 Position { get { return _position; } set { _position = value; }  }
+
+        public BoundingRectangle Bounds { get { return _bounds; } set { } }
 
         public void LoadContent(ContentManager content)
         {
@@ -100,8 +102,7 @@ namespace Overgrown.Entities
             if (_position.Y < 0 + (HITBOX_HEIGHT / 2)) { _position.Y = 0 + (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
             if (_position.Y > 640 - (HITBOX_HEIGHT / 2)) { _position.Y = 640 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
 
-            _bounds.X = _position.X - (HITBOX_WIDTH / 2);
-            _bounds.Y = _position.Y - (HITBOX_HEIGHT / 2);
+            UpdateBounds();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -131,9 +132,15 @@ namespace Overgrown.Entities
             Vector2 drawPosition = new Vector2((int)_position.X, (int)_position.Y);
             SpriteEffects spriteEffects = (_flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Rectangle sourceRectangle = new Rectangle(_animationFrame * SPRITE_WIDTH, (int)_state * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
-            //Rectangle debugBoxRectangle = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
+            Rectangle debugBoxRectangle = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
             spriteBatch.Draw(_texture, drawPosition, sourceRectangle, Color.White, 0f, new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2), 1, spriteEffects, 0);
-            //spriteBatch.Draw(_textureHitbox, new Vector2(bounds.X, bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
+            spriteBatch.Draw(_textureHitbox, new Vector2(_bounds.X, _bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
+        }
+
+        public void UpdateBounds()
+        {
+            _bounds.X = _position.X - (HITBOX_WIDTH / 2);
+            _bounds.Y = _position.Y - (HITBOX_HEIGHT / 2);
         }
     }
 }

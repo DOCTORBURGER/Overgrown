@@ -81,7 +81,8 @@ namespace Overgrown.Tilemaps
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, WorldRect, SourceRect, Color.White, 0f, Vector2.Zero, SpriteEffects, 1f);
+            Color color = (Collidable) ? Color.Green : Color.White;
+            spriteBatch.Draw(Texture, WorldRect, SourceRect, color, 0f, Vector2.Zero, SpriteEffects, 1f);
         }
     }
 }
