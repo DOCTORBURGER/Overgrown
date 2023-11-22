@@ -11,6 +11,7 @@ using Overgrown.Save_System;
 using System.Collections.Generic;
 using Overgrown.Collisions;
 using System.Transactions;
+using System;
 
 namespace Overgrown.Scenes
 {
@@ -148,32 +149,49 @@ namespace Overgrown.Scenes
 
         private void ResolveCollision(Player player, TexturedTile tile)
         {
-            // Implement collision resolution, adjusting the player's position and possibly their velocity.
-            // You can implement different responses depending on the type of the tile (e.g., solid block, water, spikes).
+            BoundingRectangle playerBounds = player.Bounds;
+            BoundingRectangle tileBounds = new BoundingRectangle(
+                tile.WorldRect.X, tile.WorldRect.Y, tile.WorldRect.Width, tile.WorldRect.Height);
 
-            // Simple example: If the tile is solid, prevent the player from moving into the tile's space.
-            Rectangle intersection = Rectangle.Intersect(
-                new Rectangle((int)player.Bounds.X, (int)player.Bounds.Y, (int)player.Bounds.Width, (int)player.Bounds.Height),
-                tile.WorldRect);
-
-            if (intersection.Width < intersection.Height)
+            if (!CollisionHelper.Collides(tileBounds, playerBounds))
             {
-                // Horizontal collision
-                if (player.Position.X < tile.WorldRect.Center.X) // Player is on the left
-                    player.Position = new Vector2(player.Position.X - intersection.Width, player.Position.Y);
-                else // Player is on the right
-                    player.Position = new Vector2(player.Position.X + intersection.Width, player.Position.Y);
-            }
-            else
-            {
-                // Vertical collision
-                if (player.Position.Y < tile.WorldRect.Center.Y) // Player is above
-                    player.Position = new Vector2(player.Position.X, player.Position.Y - intersection.Height);
-                else // Player is below
-                    player.Position = new Vector2(player.Position.X, player.Position.Y + intersection.Height);
+                return;
             }
 
-            // Update player bounds after resolving collisions
+            float topOverlap = (playerBounds.Bottom - tileBounds.Top);
+            float bottomOverlap = (tileBounds.Bottom - playerBounds.Top);
+            float leftOverlap = (playerBounds.Right - tileBounds.Left);
+            float rightOverlap = (tileBounds.Right - playerBounds.Left);
+
+            float minOverlap = Math.Min(Math.Min(topOverlap, bottomOverlap), Math.Min(leftOverlap, rightOverlap));
+
+            Vector2 position = player.Position;
+            Vector2 velocity = player.Velocity;
+
+            if (minOverlap == topOverlap)
+            {
+                position.Y -= topOverlap;
+                velocity.Y = 0;
+            }
+            else if (minOverlap == bottomOverlap)
+            {
+                position.Y += bottomOverlap + 1;
+                velocity.Y = 0;
+            }
+            else if (minOverlap == leftOverlap)
+            {
+                position.X -= leftOverlap;
+                velocity.X = 0;
+            }
+            else if (minOverlap == rightOverlap)
+            {
+                position.X += rightOverlap;
+                velocity.X = 0;
+            }
+
+            player.Position = position;
+            player.Velocity = velocity;
+
             player.UpdateBounds();
         }
     }

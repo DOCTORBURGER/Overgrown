@@ -50,6 +50,8 @@ namespace Overgrown.Entities
 
         public Vector2 Position { get { return _position; } set { _position = value; }  }
 
+        public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+
         public BoundingRectangle Bounds { get { return _bounds; } set { } }
 
         public void LoadContent(ContentManager content)
