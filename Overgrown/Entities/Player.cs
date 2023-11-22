@@ -33,6 +33,8 @@ namespace Overgrown.Entities
 
         private bool _flipped = false;
 
+        private bool _grounded = false;
+
         private Vector2 _position = new Vector2(200, 180);
 
         private Vector2 _velocity = new Vector2(0, 0);
@@ -51,6 +53,8 @@ namespace Overgrown.Entities
         public Vector2 Position { get { return _position; } set { _position = value; }  }
 
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+
+        public bool Grounded { get { return _grounded; } set { _grounded = value; } }
 
         public BoundingRectangle Bounds { get { return _bounds; } set { } }
 
@@ -91,8 +95,9 @@ namespace Overgrown.Entities
                 _state = PlayerState.Idle;
             }
 
-            if (_keyboardState.IsKeyDown(Keys.Space) && _priorKeyboardState.IsKeyUp(Keys.Space))
+            if (_keyboardState.IsKeyDown(Keys.Space) && _priorKeyboardState.IsKeyUp(Keys.Space) && _grounded)
             {
+                _grounded = false;
                 _velocity.Y = -600;
                 _jumpSound.Play();
             }

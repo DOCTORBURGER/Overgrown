@@ -170,6 +170,7 @@ namespace Overgrown.Scenes
 
             if (minOverlap == topOverlap)
             {
+                player.Grounded = true;
                 position.Y -= topOverlap;
                 velocity.Y = 0;
             }
