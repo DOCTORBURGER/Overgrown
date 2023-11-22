@@ -134,9 +134,9 @@ namespace Overgrown.Entities
             Vector2 drawPosition = new Vector2((int)_position.X, (int)_position.Y);
             SpriteEffects spriteEffects = (_flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Rectangle sourceRectangle = new Rectangle(_animationFrame * SPRITE_WIDTH, (int)_state * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
-            Rectangle debugBoxRectangle = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
+            //Rectangle debugBoxRectangle = new Rectangle(0, 0, HITBOX_WIDTH, HITBOX_HEIGHT);
             spriteBatch.Draw(_texture, drawPosition, sourceRectangle, Color.White, 0f, new Vector2(SPRITE_WIDTH / 2, SPRITE_HEIGHT / 2), 1, spriteEffects, 0);
-            spriteBatch.Draw(_textureHitbox, new Vector2(_bounds.X, _bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
+            //spriteBatch.Draw(_textureHitbox, new Vector2(_bounds.X, _bounds.Y), debugBoxRectangle, new Color(100, 100, 100, 100));
         }
 
         public void UpdateBounds()
