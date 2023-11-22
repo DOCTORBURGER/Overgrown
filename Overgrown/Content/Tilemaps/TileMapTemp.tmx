@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
 	<tileset firstgid="1" name="Overgrown Start Tileset" tilewidth="32" tileheight="32" tilecount="169" columns="13">
-		<image source="TileMapStart.png" width="416" height="416"/>
+		<image source="Tilemaps/TileMapStart.png" width="416" height="416"/>
 		<tile id="14">
 			<properties>
 				<property name="Collidable" type="bool" value="true"/>

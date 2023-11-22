@@ -42,7 +42,7 @@ namespace Overgrown.Managers
                 GraphicsDevice.PresentationParameters.BackBufferFormat,
                 DepthFormat.Depth24);
 
-            Font = _content.Load<SpriteFont>("Silkscreen");
+            Font = _content.Load<SpriteFont>("Fonts/Silkscreen");
 
             CalculateMatrix();
         }

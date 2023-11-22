@@ -46,11 +46,11 @@ namespace Overgrown.Scenes
                 _content = new ContentManager(SceneManager.Game.Services, "Content");
 
             _player.LoadContent(_content);
-            _backgroundMusic = _content.Load<Song>("Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
+            _backgroundMusic = _content.Load<Song>("SoundTracks/Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
 
-            _map = _content.Load<Tilemap>("TileMapTemp");
+            _map = _content.Load<Tilemap>("Tilemaps/TileMapTemp");
 
             _camera = new Camera(SceneManager.VirtualResolution, _map);
         }

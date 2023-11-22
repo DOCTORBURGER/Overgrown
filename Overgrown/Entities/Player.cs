@@ -60,9 +60,9 @@ namespace Overgrown.Entities
 
         public void LoadContent(ContentManager content)
         {
-            _texture = content.Load<Texture2D>("player");
-            _textureHitbox = content.Load<Texture2D>("buttonbad");
-            _jumpSound = content.Load<SoundEffect>("jump");
+            _texture = content.Load<Texture2D>("Sprites/player");
+            _textureHitbox = content.Load<Texture2D>("Sprites/buttonbad");
+            _jumpSound = content.Load<SoundEffect>("SoundEffects/jump");
         }
 
         public void Update(GameTime gameTime)
