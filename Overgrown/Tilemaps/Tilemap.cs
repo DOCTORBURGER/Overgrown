@@ -67,6 +67,10 @@ namespace Overgrown.Tilemaps
 
     public class TexturedTile : TilemapTile
     {
+        public int TileID { get; set; }
+
+        public bool Collidable { get; set; }
+
         public Rectangle SourceRect { get; init; }
 
         public Rectangle WorldRect { get; init; }
@@ -77,7 +81,7 @@ namespace Overgrown.Tilemaps
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, WorldRect, SourceRect, Color.White, 0f, Vector2.Zero, SpriteEffects, 1f);
+            spriteBatch.Draw(Texture, WorldRect, SourceRect, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
     }
 }

@@ -153,7 +153,7 @@ namespace TilemapPipeline
                                 {
                                     using var st = reader.ReadSubtree();
                                     st.Read();
-                                    tileset.Properties = LoadProperties(st);
+                                    tileset.TileProperties.Add(currentTileId, LoadProperties(st));
                                     break;
                                 }
                         }

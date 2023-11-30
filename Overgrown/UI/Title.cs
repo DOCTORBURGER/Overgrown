@@ -24,7 +24,7 @@ namespace Overgrown.UI
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("title");
+            texture = content.Load<Texture2D>("Sprites/title");
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

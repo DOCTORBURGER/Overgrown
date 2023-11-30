@@ -12,6 +12,10 @@ namespace TiledPipeline
     {
         private struct TileInfo
         {
+            public bool Collidable;
+
+            public int TileID;
+
             public ExternalReference<Texture2DContent> Texture;
 
             public Rectangle SourceRect;
@@ -52,8 +56,18 @@ namespace TiledPipeline
                 {
                     for (int x = 0; x < tilesetColumns; x++)
                     {
+                        int tileID = (y * tilesetColumns) + x;
+                        bool collidable = false;
+                        if (tileset.TileProperties.ContainsKey(tileID))
+                        {
+                            tileset.TileProperties.TryGetValue(tileID, out Dictionary<string, string> properties);
+                            if (properties.ContainsKey("Collidable")) { collidable = true; }
+                        }
+
                         processedTiles.Add(new TileInfo()
                         {
+                            TileID = tileID,
+                            Collidable = collidable,
                             Texture = texture,
                             SourceRect = new Rectangle(
                                 x * (tileWidth + tileset.Spacing) + tileset.Margin,
@@ -94,6 +108,8 @@ namespace TiledPipeline
                         var tileInfo = tileInfoList[tileIndex];
                         tiles.Add(new TexturedTileContent()
                         {
+                            TileID = tileInfo.TileID,
+                            Collidable = tileInfo.Collidable,
                             Texture = tileInfo.Texture,
                             SourceRect = tileInfo.SourceRect,
                             WorldRect = new Rectangle()
