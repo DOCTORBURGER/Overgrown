@@ -21,6 +21,8 @@ namespace Overgrown.Scenes
 
         private Player _player;
 
+        private Enemy _enemy;
+
         private Song _backgroundMusic;
 
         private Tilemap _map;
@@ -38,6 +40,7 @@ namespace Overgrown.Scenes
         public GameScene()
         {
             _player = new Player();
+            _enemy = new Enemy(new Vector2(2208, 97));
             Vector2? position = SaveSystem.Load();
             if (position.HasValue) { _player.Position = position.Value; }
 
@@ -50,6 +53,7 @@ namespace Overgrown.Scenes
                 _content = new ContentManager(SceneManager.Game.Services, "Content");
 
             _player.LoadContent(_content);
+            _enemy.LoadContent(_content);
             _backgroundMusic = _content.Load<Song>("SoundTracks/Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
@@ -83,6 +87,11 @@ namespace Overgrown.Scenes
             _player.Update(gameTime);
             CheckCollisions();
             _camera.Follow(_player.Position);
+
+            if (CollisionHelper.Collides(_player.Bounds, _enemy.Bounds) && _enemy.Collected == false)
+            {
+                _enemy.Collected = true;
+            }
         }
 
         public void Draw(GameTime gameTime)
@@ -115,6 +124,11 @@ namespace Overgrown.Scenes
 
             _map.Draw(gameTime, spriteBatch);
             _player.Draw(gameTime, spriteBatch);
+            _enemy.Draw(spriteBatch);
+
+            string objective = "Find the ugly guy!";
+            if (_enemy.Collected) { objective = "You win!";  }
+            spriteBatch.DrawString(SceneManager.Font, objective, new Vector2(_camera.Position.X, _camera.Position.Y), Color.White);
 
             spriteBatch.End();
         }
