@@ -27,7 +27,7 @@ namespace Overgrown.Scenes
 
         private Camera _camera;
 
-        private float[] _parallaxSpeeds = { 0.3f, 0.5f, 0.7f, 1.0f };
+        private float[] _parallaxSpeeds = { 0.05f, 0.15f, 0.3f, 0.5f };
 
         private Texture2D[] _backgroundTexture = new Texture2D[4];
 
@@ -88,24 +88,20 @@ namespace Overgrown.Scenes
         public void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = SceneManager.SpriteBatch;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.Begin();
 
-            // Draw parallax backgrounds
             for (int i = 0; i < _backgroundTexture.Length; i++)
             {
-                float parallaxFactor = _parallaxSpeeds[i]; // Loop through speeds if there are more textures than speeds
-                                                                                    // The modulo operator ensures that when the camera position is greater than the texture width,
-                                                                                    // it wraps around, creating a seamless loop
+                float parallaxFactor = _parallaxSpeeds[i]; 
+                                                                                    
                 float remainder = (_camera.Position.X * parallaxFactor) % _backgroundTexture[i].Width;
                 float drawPosX = -remainder;
 
-                // If the camera is near the end of the texture, we need to start drawing the next texture before the end
                 if (remainder > 0)
                 {
                     drawPosX -= _backgroundTexture[i].Width;
                 }
 
-                // Draw the texture enough times to cover the entire screen width plus one extra to cover the camera movement
                 while (drawPosX < SceneManager.VirtualResolution.X)
                 {
                     spriteBatch.Draw(_backgroundTexture[i], new Vector2(drawPosX, 0), Color.White);
