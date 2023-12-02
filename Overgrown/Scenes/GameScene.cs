@@ -27,6 +27,10 @@ namespace Overgrown.Scenes
 
         private Camera _camera;
 
+        private float[] _parallaxSpeeds = { 0.3f, 0.5f, 0.7f, 1.0f };
+
+        private Texture2D[] _backgroundTexture = new Texture2D[4];
+
         private readonly InputAction _saveGame;
 
         public SceneManager SceneManager { get; set; }
@@ -53,6 +57,11 @@ namespace Overgrown.Scenes
             _map = _content.Load<Tilemap>("Tilemaps/TileMapTemp");
 
             _camera = new Camera(SceneManager.VirtualResolution, _map);
+
+            _backgroundTexture[0] = _content.Load<Texture2D>("Sprites/sky");
+            _backgroundTexture[1] = _content.Load<Texture2D>("Sprites/backmostmountain");
+            _backgroundTexture[2] = _content.Load<Texture2D>("Sprites/backmidmountain");
+            _backgroundTexture[3] = _content.Load<Texture2D>("Sprites/midmountain");
         }
 
         public void UnloadContent()
@@ -79,6 +88,32 @@ namespace Overgrown.Scenes
         public void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = SceneManager.SpriteBatch;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+            // Draw parallax backgrounds
+            for (int i = 0; i < _backgroundTexture.Length; i++)
+            {
+                float parallaxFactor = _parallaxSpeeds[i]; // Loop through speeds if there are more textures than speeds
+                                                                                    // The modulo operator ensures that when the camera position is greater than the texture width,
+                                                                                    // it wraps around, creating a seamless loop
+                float remainder = (_camera.Position.X * parallaxFactor) % _backgroundTexture[i].Width;
+                float drawPosX = -remainder;
+
+                // If the camera is near the end of the texture, we need to start drawing the next texture before the end
+                if (remainder > 0)
+                {
+                    drawPosX -= _backgroundTexture[i].Width;
+                }
+
+                // Draw the texture enough times to cover the entire screen width plus one extra to cover the camera movement
+                while (drawPosX < SceneManager.VirtualResolution.X)
+                {
+                    spriteBatch.Draw(_backgroundTexture[i], new Vector2(drawPosX, 0), Color.White);
+                    drawPosX += _backgroundTexture[i].Width;
+                }
+            }
+
+            spriteBatch.End();
 
             spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Vector3(-_camera.Position, 0)));
 
@@ -100,11 +135,21 @@ namespace Overgrown.Scenes
                 {
                     if (CollisionHelper.Collides(playerBounds, new BoundingRectangle(tile.WorldRect.X, tile.WorldRect.Y, tile.WorldRect.Width, tile.WorldRect.Height)))
                     {
-                        // Handle the collision with the tile
                         ResolveCollision(_player, tile);
                     }
                 }
             }
+
+            Vector2 position = _player.Position;
+            Vector2 velocity = _player.Velocity;
+
+            if (position.X < 0 + (playerBounds.Width / 2)) position.X = 0 + (playerBounds.Width / 2);
+            if (position.X > (_map.Width) - (playerBounds.Width / 2)) position.X = 1600 - (playerBounds.Width / 2);
+            if (position.Y < 0 + (playerBounds.Height / 2)) { position.Y = 0 + (playerBounds.Height / 2); velocity.Y = 0; }
+            if (position.Y > (_map.Height) - (playerBounds.Height / 2)) { position.Y = 640 - (playerBounds.Height / 2); velocity.Y = 0; }
+
+            _player.Position = position;
+            _player.Velocity = velocity;
         }
 
         private List<TexturedTile> GetNearbyCollidableTiles(BoundingRectangle playerBounds)
@@ -182,12 +227,10 @@ namespace Overgrown.Scenes
             else if (minOverlap == leftOverlap)
             {
                 position.X -= leftOverlap;
-                velocity.X = 0;
             }
             else if (minOverlap == rightOverlap)
             {
                 position.X += rightOverlap;
-                velocity.X = 0;
             }
 
             player.Position = position;
