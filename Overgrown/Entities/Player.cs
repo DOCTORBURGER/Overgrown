@@ -98,16 +98,11 @@ namespace Overgrown.Entities
             if (_keyboardState.IsKeyDown(Keys.Space) && _priorKeyboardState.IsKeyUp(Keys.Space) && _grounded)
             {
                 _grounded = false;
-                _velocity.Y = -600;
+                _velocity.Y = -750;
                 _jumpSound.Play();
             }
 
             _position += _velocity * t;
-
-            if (_position.X < 0 + (HITBOX_WIDTH / 2)) _position.X = 0 + (HITBOX_WIDTH / 2);
-            if (_position.X > 1600 - (HITBOX_WIDTH / 2)) _position.X = 1600 - (HITBOX_WIDTH / 2);
-            if (_position.Y < 0 + (HITBOX_HEIGHT / 2)) { _position.Y = 0 + (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
-            if (_position.Y > 640 - (HITBOX_HEIGHT / 2)) { _position.Y = 640 - (HITBOX_HEIGHT / 2); _velocity.Y = 0; }
 
             UpdateBounds();
         }
