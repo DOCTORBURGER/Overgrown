@@ -190,7 +190,7 @@ namespace Overgrown.Scenes
 
                         int index = (y * (_map.Width / 32)) + x;
                         
-                        if (layer.Tiles[index] is TexturedTile texturedTile)
+                        if (layer.Tiles[index] is TexturedTile texturedTile && texturedTile.Collidable == true)
                         {
                             nearbyTiles.Add(texturedTile);
                         }
@@ -226,21 +226,21 @@ namespace Overgrown.Scenes
             if (minOverlap == topOverlap)
             {
                 player.Grounded = true;
-                position.Y -= topOverlap;
+                position.Y -= (int)topOverlap;
                 velocity.Y = 0;
             }
             else if (minOverlap == bottomOverlap)
             {
-                position.Y += bottomOverlap + 1;
+                position.Y += (int)bottomOverlap;
                 velocity.Y = 0;
             }
             else if (minOverlap == leftOverlap)
             {
-                position.X -= leftOverlap;
+                position.X -= (int)leftOverlap;
             }
             else if (minOverlap == rightOverlap)
             {
-                position.X += rightOverlap;
+                position.X += (int)rightOverlap;
             }
 
             player.Position = position;
