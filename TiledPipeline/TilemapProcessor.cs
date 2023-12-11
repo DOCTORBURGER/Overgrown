@@ -19,6 +19,8 @@ namespace TiledPipeline
             public ExternalReference<Texture2DContent> Texture;
 
             public Rectangle SourceRect;
+
+            public byte ExternalEdges;
         }
 
         public override TilemapContent Process(TiledMapContent input, ContentProcessorContext context)
@@ -74,7 +76,8 @@ namespace TiledPipeline
                                 y * (tileHeight + tileset.Spacing) + tileset.Margin,
                                 tileWidth,
                                 tileHeight
-                            )
+                            ),
+                            ExternalEdges = 0
                         });
                     }
                 }
@@ -106,6 +109,7 @@ namespace TiledPipeline
                         }
 
                         var tileInfo = tileInfoList[tileIndex];
+
                         tiles.Add(new TexturedTileContent()
                         {
                             TileID = tileInfo.TileID,
@@ -119,7 +123,8 @@ namespace TiledPipeline
                                 Width = tileWidth,
                                 Height = tileHeight
                             },
-                            SpriteEffects = layer.SpriteEffects[tileIndex]
+                            SpriteEffects = layer.SpriteEffects[tileIndex],
+                            ExternalEdges = GetExternalEdges(x, y, layer, tileInfoList)
                         });
                     }
                 }
@@ -132,6 +137,46 @@ namespace TiledPipeline
             }
 
             return processedLayers;
+        }
+
+        private int GetExternalEdges(int x, int y, TiledLayerContent layer, List<TileInfo> tileInfoList)
+        {
+            byte externalEdges = 0;
+
+            // Check top
+            if (y == 0 || IsExternalEdge(x, y - 1, layer, tileInfoList, layer.Width))
+            {
+                externalEdges |= (byte)TileSides.Top;
+            }
+
+            // Check bottom
+            if (y == layer.Height - 1 || IsExternalEdge(x, y + 1, layer, tileInfoList, layer.Width))
+            {
+                externalEdges |= (byte)TileSides.Bottom;
+            }
+
+            // Check left
+            if (x == 0 || IsExternalEdge(x - 1, y, layer, tileInfoList, layer.Width))
+            {
+                externalEdges |= (byte)TileSides.Left;
+            }
+
+            // Check right
+            if (x == layer.Width - 1 || IsExternalEdge(x + 1, y, layer, tileInfoList, layer.Width))
+            {
+                externalEdges |= (byte)TileSides.Right;
+            }
+
+            return externalEdges;
+        }
+
+        private bool IsExternalEdge(int x, int y, TiledLayerContent layer, List<TileInfo> tileInfoList, int layerWidth)
+        {
+            int index = y * layerWidth + x;
+            int tileIndex = layer.TileIndices[index] - 1;
+
+            // Check if the tile is outside the bounds or non-collidable
+            return tileIndex == -1 || !tileInfoList[tileIndex].Collidable;
         }
     }
 }

@@ -225,22 +225,24 @@ namespace Overgrown.Scenes
             Vector2 position = player.Position;
             Vector2 velocity = player.Velocity;
 
-            if (minOverlap == topOverlap)
+            int externalEdges = tile.ExternalEdges;
+
+            if (minOverlap == topOverlap && (externalEdges & (int)TileSides.Top) == (int)TileSides.Top)
             {
                 player.Grounded = true;
                 position.Y -= (int)topOverlap;
                 velocity.Y = 0;
             }
-            else if (minOverlap == bottomOverlap)
+            else if (minOverlap == bottomOverlap && (externalEdges & (int)TileSides.Bottom) == (int)TileSides.Bottom)
             {
                 position.Y += (int)bottomOverlap;
                 velocity.Y = 0;
             }
-            else if (minOverlap == leftOverlap)
+            else if (minOverlap == leftOverlap && (externalEdges & (int)TileSides.Left) == (int)TileSides.Left)
             {
                 position.X -= (int)leftOverlap;
             }
-            else if (minOverlap == rightOverlap)
+            else if (minOverlap == rightOverlap && (externalEdges & (int)TileSides.Right) == (int)TileSides.Right)
             {
                 position.X += (int)rightOverlap;
             }
