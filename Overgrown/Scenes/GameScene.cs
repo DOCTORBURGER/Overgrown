@@ -236,7 +236,7 @@ namespace Overgrown.Scenes
             else if (minOverlap == bottomOverlap && (externalEdges & (int)TileSides.Bottom) == (int)TileSides.Bottom)
             {
                 position.Y += (int)bottomOverlap;
-                velocity.Y = 0;
+                if (velocity.Y < 0) velocity.Y = 0;
             }
             else if (minOverlap == leftOverlap && (externalEdges & (int)TileSides.Left) == (int)TileSides.Left)
             {
