@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Overgrown.Collisions;
+using Overgrown.State_Management;
 
 namespace Overgrown.Entities
 {
@@ -17,39 +18,34 @@ namespace Overgrown.Entities
     public class Player
     {
         private const float ANIMATION_SPEED = 0.125f;
-
         private const float GRAVITY = 1500f;
-
         private const int SPRITE_HEIGHT = 64;
         private const int SPRITE_WIDTH = 64;
-
         private const int HITBOX_HEIGHT = 64;
         private const int HITBOX_WIDTH = 32;
 
-        private KeyboardState _keyboardState;
-        private KeyboardState _priorKeyboardState;
+        InputState _input = new InputState();
+
+        private readonly InputAction _left =  new InputAction(new[] { Keys.A }, false);
+        private readonly InputAction _right = new InputAction(new[] { Keys.D }, false);
+        private readonly InputAction _jump = new InputAction(new[] { Keys.Space }, true);
 
         private Texture2D _texture;
         private Texture2D _textureHitbox;
 
+        private SoundEffect _jumpSound;
+
         private bool _flipped = false;
-
         private bool _grounded = false;
-
         private Vector2 _position = new Vector2(200, 180);
-
         private Vector2 _velocity = new Vector2(0, 0);
+        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_WIDTH, HITBOX_HEIGHT);
 
         private PlayerState _state = PlayerState.Idle;
         private PlayerState _previousState = PlayerState.Idle;
 
-        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_WIDTH, HITBOX_HEIGHT);
-
         private int _animationFrame = 0;
-
         private double _animationTimer;
-
-        private SoundEffect _jumpSound;
 
         public Vector2 Position { get { return _position; } set { _position = value; }  }
 
@@ -68,22 +64,21 @@ namespace Overgrown.Entities
 
         public void Update(GameTime gameTime)
         {
-            float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _input.Update();
 
-            _priorKeyboardState = _keyboardState;
-            _keyboardState = Keyboard.GetState();
+            float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             _previousState = _state;
 
             _velocity.Y += t * GRAVITY;
 
-            if (_keyboardState.IsKeyDown(Keys.D) && !_keyboardState.IsKeyDown(Keys.A))
+            if (_right.Occurred(_input) && !_left.Occurred(_input))
             {
                 _flipped = false;
                 _velocity.X = 250;
                 _state = PlayerState.Running;
             }
-            else if (_keyboardState.IsKeyDown(Keys.A) && !_keyboardState.IsKeyDown(Keys.D))
+            else if (_left.Occurred(_input) && !_right.Occurred(_input))
             {
                 _flipped = true;
                 _velocity.X = -250;
@@ -92,16 +87,16 @@ namespace Overgrown.Entities
             else
             {
                 _velocity.X = 0;
-
                 _state = PlayerState.Idle;
             }
 
-            if (_keyboardState.IsKeyDown(Keys.Space) && _priorKeyboardState.IsKeyUp(Keys.Space) && _grounded)
+            if (_jump.Occurred(_input) && _grounded)
             {
                 _grounded = false;
                 _velocity.Y = -750;
                 _jumpSound.Play();
                 _state = PlayerState.Jumping;
+                _animationFrame = 0;
             }
 
             if (_grounded == false && _previousState == PlayerState.Jumping)
