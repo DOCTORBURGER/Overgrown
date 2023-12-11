@@ -23,10 +23,11 @@ namespace Overgrown.Entities
         private const int SPRITE_WIDTH = 64;
         private const int HITBOX_HEIGHT = 64;
         private const int HITBOX_WIDTH = 32;
+        private const float COYOTE_TIME = 0.25f;
 
         InputState _input = new InputState();
 
-        private readonly InputAction _left =  new InputAction(new[] { Keys.A }, false);
+        private readonly InputAction _left = new InputAction(new[] { Keys.A }, false);
         private readonly InputAction _right = new InputAction(new[] { Keys.D }, false);
         private readonly InputAction _jump = new InputAction(new[] { Keys.Space }, true);
 
@@ -47,7 +48,9 @@ namespace Overgrown.Entities
         private int _animationFrame = 0;
         private double _animationTimer;
 
-        public Vector2 Position { get { return _position; } set { _position = value; }  }
+        private double _coyoteTimer;
+
+        public Vector2 Position { get { return _position; } set { _position = value; } }
 
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
 
@@ -72,6 +75,11 @@ namespace Overgrown.Entities
 
             _velocity.Y += t * GRAVITY;
 
+            _velocity.X = 0;
+            _state = PlayerState.Idle;
+
+            if (_grounded) { _coyoteTimer = 0; }
+
             if (_right.Occurred(_input) && !_left.Occurred(_input))
             {
                 _flipped = false;
@@ -84,23 +92,20 @@ namespace Overgrown.Entities
                 _velocity.X = -250;
                 _state = PlayerState.Running;
             }
-            else
-            {
-                _velocity.X = 0;
-                _state = PlayerState.Idle;
-            }
 
-            if (_jump.Occurred(_input) && _grounded)
+            if (_jump.Occurred(_input) && (_grounded || _coyoteTimer < COYOTE_TIME))
             {
                 _grounded = false;
                 _velocity.Y = -750;
                 _jumpSound.Play();
+                _coyoteTimer = COYOTE_TIME;
                 _state = PlayerState.Jumping;
                 _animationFrame = 0;
             }
 
-            if (_grounded == false && _previousState == PlayerState.Jumping)
+            if (_grounded == false  && _previousState == PlayerState.Jumping)
             {
+                _coyoteTimer += t;
                 _state = PlayerState.Jumping;
             }
             else if (_grounded == false && _state != PlayerState.Jumping)
@@ -108,6 +113,11 @@ namespace Overgrown.Entities
                 _previousState = PlayerState.Jumping;
                 _state = PlayerState.Jumping;
                 _animationFrame = 3;
+            }
+
+            if (_state == PlayerState.Jumping && _velocity.Y < 0 && _jump.Released(_input))
+            {
+                _velocity.Y = 0;
             }
 
             _position += _velocity * t;

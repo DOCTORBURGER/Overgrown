@@ -43,6 +43,11 @@ namespace Overgrown.State_Management
             return CurrentKeyboardState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
         }
 
+        public bool IsKeyReleased(Keys key) 
+        {
+            return _previousKeyboardState.IsKeyDown(key) && CurrentKeyboardState.IsKeyUp(key);
+        }
+
         public bool isMouseLeftClickPressed()
         {
             return CurrentMouseState.LeftButton == ButtonState.Pressed;
