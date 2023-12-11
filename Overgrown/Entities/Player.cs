@@ -152,8 +152,8 @@ namespace Overgrown.Entities
 
         public void UpdateBounds()
         {
-            _bounds.X = _position.X - (HITBOX_WIDTH / 2);
-            _bounds.Y = _position.Y - (HITBOX_HEIGHT / 2);
+            _bounds.X = (int)(_position.X - (HITBOX_WIDTH / 2));
+            _bounds.Y = (int)(_position.Y - (HITBOX_HEIGHT / 2));
         }
     }
 }
