@@ -11,8 +11,7 @@ namespace Overgrown.Entities
     {
         Idle,
         Running,
-        Jumping,
-        Falling
+        Jumping
     }
 
     public class Player
@@ -108,6 +107,12 @@ namespace Overgrown.Entities
             if (_grounded == false && _previousState == PlayerState.Jumping)
             {
                 _state = PlayerState.Jumping;
+            }
+            else if (_grounded == false && _state != PlayerState.Jumping)
+            {
+                _previousState = PlayerState.Jumping;
+                _state = PlayerState.Jumping;
+                _animationFrame = 3;
             }
 
             _position += _velocity * t;
