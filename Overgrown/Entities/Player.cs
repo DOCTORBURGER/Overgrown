@@ -10,7 +10,8 @@ namespace Overgrown.Entities
     public enum PlayerState
     {
         Idle,
-        Running
+        Running,
+        Jumping
     }
 
     public class Player
@@ -79,13 +80,13 @@ namespace Overgrown.Entities
             if (_keyboardState.IsKeyDown(Keys.D) && !_keyboardState.IsKeyDown(Keys.A))
             {
                 _flipped = false;
-                _velocity.X = 180;
+                _velocity.X = 250;
                 _state = PlayerState.Running;
             }
             else if (_keyboardState.IsKeyDown(Keys.A) && !_keyboardState.IsKeyDown(Keys.D))
             {
                 _flipped = true;
-                _velocity.X = -180;
+                _velocity.X = -250;
                 _state = PlayerState.Running;
             }
             else
@@ -100,6 +101,18 @@ namespace Overgrown.Entities
                 _grounded = false;
                 _velocity.Y = -750;
                 _jumpSound.Play();
+                _state = PlayerState.Jumping;
+            }
+
+            if (_grounded == false && _previousState == PlayerState.Jumping)
+            {
+                _state = PlayerState.Jumping;
+            }
+            else if (_grounded == false && _state != PlayerState.Jumping)
+            {
+                _previousState = PlayerState.Jumping;
+                _state = PlayerState.Jumping;
+                _animationFrame = 3;
             }
 
             _position += _velocity * t;
@@ -118,15 +131,18 @@ namespace Overgrown.Entities
 
             if (_animationTimer > ANIMATION_SPEED)
             {
+                _animationFrame++;
                 if (_state == PlayerState.Idle)
                 {
-                    _animationFrame++;
                     if (_animationFrame > 9) _animationFrame = 0;
                 }
                 if (_state == PlayerState.Running)
                 {
-                    _animationFrame++;
                     if (_animationFrame > 7) _animationFrame = 0;
+                }
+                if (_state == PlayerState.Jumping)
+                {
+                    if (_animationFrame > 8) _animationFrame = 8;
                 }
                 _animationTimer -= ANIMATION_SPEED;
             }

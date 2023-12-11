@@ -139,6 +139,8 @@ namespace Overgrown.Scenes
 
             List<TexturedTile> tilesToCheck = GetNearbyCollidableTiles(playerBounds);
 
+            _player.Grounded = false;
+
             foreach (TexturedTile tile in tilesToCheck)
             {
                 if (tile.Collidable)
