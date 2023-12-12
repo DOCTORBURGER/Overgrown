@@ -20,13 +20,9 @@ namespace Overgrown.Scenes
         private ContentManager _content;
 
         private Player _player;
-
         private Enemy _enemy;
-
         private Song _backgroundMusic;
-
         private Tilemap _map;
-
         private Camera _camera;
 
         private float[] _parallaxSpeeds = { 0.05f, 0.15f, 0.3f, 0.5f };
