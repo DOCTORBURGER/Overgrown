@@ -3,6 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Overgrown.Tilemaps
 {
+    public enum TileSides : int
+    {
+        None = 0,
+        Top = 1,    // 0001
+        Bottom = 2, // 0010
+        Left = 4,   // 0100
+        Right = 8   // 1000
+    }
+
     /// <summary>
     /// This tilemap class features an OO approach
     /// </summary>
@@ -78,6 +87,8 @@ namespace Overgrown.Tilemaps
         public Texture2D Texture { get; init; }
 
         public SpriteEffects SpriteEffects { get; init; }
+
+        public int ExternalEdges { get; set; }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {

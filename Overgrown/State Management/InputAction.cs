@@ -36,5 +36,17 @@ namespace Overgrown.State_Management
 
             return false;
         }
+
+        public bool Released(InputState input)
+        {
+            KeyPress keyPress = input.IsKeyReleased;
+
+            foreach (Keys key in _keys)
+            {
+                if (keyPress(key)) return true;
+            }
+
+            return false;
+        }
     }
 }

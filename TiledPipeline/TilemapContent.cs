@@ -6,6 +6,15 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 
 namespace TiledPipeline
 {
+    public enum TileSides : byte
+    {
+        None = 0,
+        Top = 1,    // 0001
+        Bottom = 2, // 0010
+        Left = 4,   // 0100
+        Right = 8   // 1000
+    }
+
     [ContentSerializerRuntimeType("Overgrown.Tilemaps.Tilemap, Overgrown")]
     public class TilemapContent
     {
@@ -46,5 +55,7 @@ namespace TiledPipeline
         public ExternalReference<Texture2DContent> Texture { get; init; }
 
         public SpriteEffects SpriteEffects { get; init; }
+
+        public int ExternalEdges { get; set; }
     }
 }
