@@ -38,9 +38,9 @@ namespace Overgrown.Entities
 
         private bool _flipped = false;
         private bool _grounded = false;
-        private Vector2 _position = new Vector2(200, 180);
+        private Vector2 _position;
         private Vector2 _velocity = new Vector2(0, 0);
-        private BoundingRectangle _bounds = new BoundingRectangle(new Vector2(200 - (HITBOX_WIDTH / 2), 180 - (HITBOX_HEIGHT / 2)), HITBOX_WIDTH, HITBOX_HEIGHT);
+        private BoundingRectangle _bounds;
 
         private PlayerState _state = PlayerState.Idle;
         private PlayerState _previousState = PlayerState.Idle;
@@ -57,6 +57,12 @@ namespace Overgrown.Entities
         public bool Grounded { get { return _grounded; } set { _grounded = value; } }
 
         public BoundingRectangle Bounds { get { return _bounds; } set { } }
+
+        public Player(Vector2 position)
+        {
+            _position = position;
+            _bounds = new BoundingRectangle(_position, HITBOX_WIDTH, HITBOX_HEIGHT);
+        }
 
         public void LoadContent(ContentManager content)
         {

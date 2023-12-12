@@ -21,9 +21,13 @@ namespace Overgrown.Scenes
 
         private Player _player;
         private Enemy _enemy;
+        private EnemyWife _enemyWife;
         private Song _backgroundMusic;
         private Tilemap _map;
         private Camera _camera;
+        private string _objective = "Find her husband!";
+
+        private Vector2 _playerSpawn = new Vector2(300, 450);
 
         private float[] _parallaxSpeeds = { 0.05f, 0.15f, 0.3f, 0.5f };
 
@@ -35,8 +39,9 @@ namespace Overgrown.Scenes
 
         public GameScene()
         {
-            _player = new Player();
-            _enemy = new Enemy(new Vector2(2208, 97));
+            _player = new Player(_playerSpawn);
+            _enemy = new Enemy(new Vector2(4536, 550));
+            _enemyWife = new EnemyWife(new Vector2(450, 464));
             Vector2? position = SaveSystem.Load();
             if (position.HasValue) { _player.Position = position.Value; }
 
@@ -50,6 +55,7 @@ namespace Overgrown.Scenes
 
             _player.LoadContent(_content);
             _enemy.LoadContent(_content);
+            _enemyWife.LoadContent(_content);
             _backgroundMusic = _content.Load<Song>("SoundTracks/Kevin MacLeod - Erik Satie_ Gymnopedie No 1");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
@@ -86,7 +92,17 @@ namespace Overgrown.Scenes
 
             if (CollisionHelper.Collides(_player.Bounds, _enemy.Bounds) && _enemy.Collected == false)
             {
+                _playerSpawn = new Vector2(4536, 550);
                 _enemy.Collected = true;
+                _enemy.Position = new Vector2(425, 464);
+                _objective = "Bring her husband back!";
+            }
+
+            if (CollisionHelper.Collides(_player.Bounds, _enemyWife.Bounds) && _enemy.Collected == true && _enemyWife.Collected == false)
+            {
+                _enemyWife.Collected = true;
+                _enemy.DrawFinally = true;
+                _objective = "You win!";
             }
         }
 
@@ -119,12 +135,11 @@ namespace Overgrown.Scenes
             spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(new Vector3(-_camera.Position, 0)));
 
             _map.Draw(gameTime, spriteBatch);
-            _player.Draw(gameTime, spriteBatch);
+            _enemyWife.Draw(gameTime, spriteBatch);
             _enemy.Draw(spriteBatch);
+            _player.Draw(gameTime, spriteBatch);
 
-            string objective = "Find the ugly guy!";
-            if (_enemy.Collected) { objective = "You win!";  }
-            spriteBatch.DrawString(SceneManager.Font, objective, new Vector2(_camera.Position.X, _camera.Position.Y), Color.White);
+            spriteBatch.DrawString(SceneManager.Font, _objective, new Vector2(_camera.Position.X, _camera.Position.Y), Color.White);
 
             spriteBatch.End();
         }
@@ -152,9 +167,13 @@ namespace Overgrown.Scenes
             Vector2 velocity = _player.Velocity;
 
             if (position.X < 0 + (playerBounds.Width / 2)) position.X = 0 + (playerBounds.Width / 2);
-            if (position.X > (_map.Width) - (playerBounds.Width / 2)) position.X = 1600 - (playerBounds.Width / 2);
+            if (position.X > (_map.Width) - (playerBounds.Width / 2)) position.X = _map.Width - (playerBounds.Width / 2);
             if (position.Y < 0 + (playerBounds.Height / 2)) { position.Y = 0 + (playerBounds.Height / 2); velocity.Y = 0; }
-            if (position.Y > (_map.Height) - (playerBounds.Height / 2)) { position.Y = 640 - (playerBounds.Height / 2); velocity.Y = 0; }
+            if (position.Y > (_map.Height) + (playerBounds.Height / 2)) 
+            {
+                position = _playerSpawn;
+                velocity.Y = 0; 
+            }
 
             _player.Position = position;
             _player.Velocity = velocity;
